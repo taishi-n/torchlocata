@@ -9,11 +9,13 @@ and CLI name `locata-torch`.
 
 Reviewed on 2026-10-07. The reader, root lookup, explicit downloader, CLI,
 Apache-2.0 license, package metadata, and validation/publication workflows are
-implemented. Package metadata is set to `0.1.0rc1` for the TestPyPI rehearsal;
-publication is pending. The target repository is `taishi-n/torchlocata`, and the
-PyPI owner is `taishi-n`. The owner confirmed both pending publishers. The
-[validation record](validation.md) separates executed checks from remaining
-remote CI and publication. [Release notes](releases.md) describe the candidate.
+implemented. The `0.1.0rc1` TestPyPI rehearsal passed, including public artifact
+hashes and an independent installed consumer. Package metadata is set to `0.1.0`
+for the stable release. The target repository is `taishi-n/torchlocata`, and the
+PyPI owner is `taishi-n`. The owner confirmed both pending publishers; TestPyPI
+OIDC has succeeded. The [validation record](validation.md) separates executed
+checks from the stable publication and consumer checks that follow tagging.
+[Release notes](releases.md) describe the release.
 The [getting-started guide](getting-started.md) gives the pip/uv installation and
 usage instructions intended for the completed release.
 
@@ -261,7 +263,8 @@ TestPyPI needs its own configuration. Avoid storing a long-lived upload token.
 
 The public repository `taishi-n/torchlocata` and local `origin` now exist. Package
 environments `pypi`/`testpypi` are restricted to `v*` tags and require review by
-`taishi-n`; `github-pages` is tag-restricted. GitHub Pages is enabled with source
+`taishi-n`; `github-pages` allows `v*` tags and `main` for explicit documentation
+updates. GitHub Pages is enabled with source
 **GitHub Actions** and HTTPS. The site inherits the account's existing custom
 domain, making its canonical target `https://taishi.org/torchlocata/`; it is not
 yet deployed. No account-wide domain setting was changed.
@@ -309,7 +312,9 @@ No upload token is stored in this repository. See the official
    Pages after publication succeeds. Do not rebuild distributions in publish jobs.
 5. Verify PyPI's exact version and wheel hash, install it in an independent
    environment, and run the documented existing-data workflow. Mark publication
-   complete only after these checks.
+   complete only after these checks. Commit the completed validation record and
+   use the manual `docs.yml` workflow to deploy the updated documentation from
+   `main`; this does not rebuild or republish package artifacts.
 
 `scripts/check_release.py` rejects version/tag mismatches, unsupported prerelease
 types, corpus/generated assets, missing licenses or typing metadata, and incorrect

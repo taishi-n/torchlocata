@@ -1,5 +1,12 @@
 # Release notes
 
+## 0.1.0
+
+The first stable version promotes the verified TestPyPI candidate to PyPI. Its
+reader and downloader API is the same as `0.1.0rc1`. Installation instructions
+use `pip install locata-torch` or `uv add locata-torch`, with the optional
+`download` extra for explicit dataset preparation.
+
 ## 0.1.0rc1
 
 The first release candidate includes:
@@ -16,7 +23,10 @@ The first release candidate includes:
 - A CLI, Apache-2.0 code license, English Zensical documentation, and validated
   wheel/sdist publication through GitHub OIDC.
 
-Candidate publication and consumer rehearsal are pending. Validation uses small
-synthetic fixtures and the existing read-only LOCATA snapshot. No official
-archive is downloaded during release verification. Real final-release audio/VAD
-payloads remain unverified; see the [validation record](validation.md).
+Published to TestPyPI on 2026-10-07. CI passed on Python 3.10–3.14 and
+Linux/macOS/Windows, including minimum dependencies. An independent TestPyPI
+installation passed synthetic checks, the existing-data integration suite, and
+the spawn example. Validation uses small fixtures and the read-only LOCATA
+snapshot; no official archive is downloaded during release verification. Real
+final-release audio/VAD payloads remain unverified; see the
+[validation record](validation.md).

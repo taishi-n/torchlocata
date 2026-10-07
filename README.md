@@ -14,13 +14,13 @@ come from WAV headers.
 
 The code is licensed under Apache-2.0, separately from the LOCATA data license.
 The first PyPI release includes explicit downloading and extraction; release
-validation is tracked in the [release plan](docs/release-plan.md). Repairing data, RIR
-synthesis, model training, official evaluation metrics, and other corpora remain
-outside the scope.
+validation is tracked in the
+[release plan](https://taishi.org/torchlocata/release-plan.html). Repairing data,
+RIR synthesis, model training, official evaluation metrics, and other corpora
+remain outside the scope.
 
-### Install after PyPI publication
+### Install from PyPI
 
-These commands target the first PyPI release; publication is pending.
 Choose the command for your Python environment:
 
 | Environment | Read an existing dataset | Include download support |
@@ -30,7 +30,7 @@ Choose the command for your Python environment:
 
 Import `locata_torch` in your own application and use the quick start below with
 your dataset root. For the download API, CLI, and shared path settings,
-see the [published-package tutorial](docs/getting-started.md).
+see the [published-package tutorial](https://taishi.org/torchlocata/getting-started.html).
 Command syntax follows the official [pip installation guide](https://pip.pypa.io/en/stable/user_guide/#installing-packages)
 and [uv project guide](https://docs.astral.sh/uv/guides/projects/).
 
@@ -160,9 +160,10 @@ The geometry helpers use LOCATA's `R.T @ (h - p)` convention. `locata_doa` requi
 exactly matched pose clocks, returns azimuth measured from +y in `[-pi, pi)`, and
 uses `inclination` from +z in `[0, pi]`. Angles are radians and distance is metres.
 
-See the detailed [data model](docs/data-model.md), [time and window
-contract](docs/time-and-windows.md), [geometry](docs/geometry.md), and [I/O and
-DataLoader contract](docs/io-and-dataloader.md).
+See the detailed [data model](https://taishi.org/torchlocata/data-model.html),
+[time and window contract](https://taishi.org/torchlocata/time-and-windows.html),
+[geometry](https://taishi.org/torchlocata/geometry.html), and
+[I/O and DataLoader contract](https://taishi.org/torchlocata/io-and-dataloader.html).
 
 ## Documentation
 
@@ -183,8 +184,9 @@ uv run python scripts/check_docs_links.py site
 
 Open `site/index.html` directly or use the preview server. The site includes a
 source-generated API reference, tutorials, the complete data contract, development
-instructions, and the [reference and license record](docs/references.md). Generated
-HTML is ignored by version control.
+instructions, and the
+[reference and license record](https://taishi.org/torchlocata/references.html).
+Generated HTML is ignored by version control.
 
 ## Development and verification
 
@@ -206,15 +208,19 @@ installations. No LOCATA archive is downloaded by CI.
 The release workflow validates one wheel/sdist set before publishing it with
 GitHub OIDC. An exact stable `vX.Y.Z` tag publishes to PyPI; an exact
 `vX.Y.ZrcN` tag publishes to TestPyPI. The tag must match package metadata.
-Manual validation never publishes. Artifacts include the Apache-2.0 license and
-`py.typed`, and exclude corpus files and generated sites. See the
-[release plan](docs/release-plan.md) for account configuration and remaining steps.
+Manual release validation never publishes a Python package. Artifacts include
+the Apache-2.0 license and `py.typed`, and exclude corpus files and generated
+sites. See the [release plan](https://taishi.org/torchlocata/release-plan.html)
+for account configuration and release operations.
+After publication, the manual `docs.yml` workflow can deploy documentation
+updates from `main` without rebuilding or publishing Python distributions.
 
 Mandatory tests create small synthetic WAV and TXT files in temporary directories.
 Real-data tests run only with an explicit `LOCATA_ROOT`. The multiple-worker example
 uses `spawn` and a `__main__` guard. Dataset files remain read-only; the library
 writes no index or cache inside the corpus.
 
-Read the [documentation overview](docs/index.md), [development
-guide](docs/development.md), and [validation record](docs/validation.md) for
-commands, executed checks, and remaining limitations.
+Read the [documentation overview](https://taishi.org/torchlocata/),
+[development guide](https://taishi.org/torchlocata/development.html), and
+[validation record](https://taishi.org/torchlocata/validation.html) for commands,
+executed checks, and remaining limitations.

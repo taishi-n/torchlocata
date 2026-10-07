@@ -51,8 +51,9 @@ the split name.
 
 The implementation reads existing or explicitly downloaded data, supports shared
 root configuration, and includes a pinned-release downloader. The code is
-Apache-2.0; dataset licensing is separate. PyPI publication is pending; the
-[release plan](release-plan.md) tracks the remaining account and release steps.
+Apache-2.0; dataset licensing is separate. The [getting-started guide](getting-started.md)
+describes PyPI installation, and the [release plan](release-plan.md) records
+release operations and validation boundaries.
 Repairing the corpus, synthesizing RIRs, training models, porting official metrics,
 and supporting other corpora remain outside the scope. This is an independent
 implementation without a TorchRIR dependency.

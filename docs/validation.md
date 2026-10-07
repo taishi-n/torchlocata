@@ -108,7 +108,7 @@ The new tutorial and link-checker tests were run before their files were added,
 confirming the expected missing-file failures. The documentation-only change did
 not rerun the real-data integration suite; those 12 passed checks are the earlier
 implementation results recorded above. Documentation checks are included in CI,
-but remote CI and site publication have not been performed.
+but remote CI and site publication had not been performed at that stage.
 
 ## Release planning and placeholder roots
 
@@ -136,15 +136,16 @@ not rerun. These checks do not validate the planned downloader or release workfl
 
 ## Published-package usage instructions
 
-The README and getting-started guide now describe pip/uv installation after
-publication, use from an application, shared roots, and the planned download
-API/CLI. Current reader examples are distinguished from pending release features.
+At this documentation stage, the README and getting-started guide described
+pip/uv installation after publication, use from an application, shared roots,
+and the planned download API/CLI. Reader examples were distinguished from
+pending release features.
 
 The README/tutorial execution and link-checker tests passed: 10 tests. Strict
 Zensical build, generated-site link checks, and `uv build --no-sources` passed.
 Documentation remained English with placeholder dataset paths. PyPI installation
-commands were not executed; environment lookup and downloader examples require
-the planned implementation. The library code and dependencies were unchanged.
+commands were not executed; environment lookup and downloader examples still
+required implementation. The library code and dependencies were unchanged.
 
 ## Path configuration, downloader, and release preparation
 
@@ -202,22 +203,56 @@ fixture: Windows had normalized its name before it was written.
 The fixture now preserves raw ZIP names. A new NUL-name regression also failed
 before a fix that rejects normalization or truncation of original member names.
 The corrected local suite passed 147 tests, with 12 integration tests deselected,
-on Python 3.12.8. The candidate must pass the full matrix before its tag is pushed.
-TestPyPI/PyPI publication and public consumer installation remain pending.
+on Python 3.12.8. The candidate was required to pass the full matrix before its
+tag was pushed. Publication and public consumer installation were pending then.
 Candidate lint, formatting (41 Python files), type checks, strict README
 rendering, wheel/sdist inspection, and `v0.1.0rc1` routing passed locally. The
 strict Zensical build passed with 13 pages and 1,451 local references.
 
+The [candidate main CI run](https://github.com/taishi-n/torchlocata/actions/runs/37610756970)
+then passed all nine jobs. All eight test jobs passed 147 tests with 12 integration
+tests deselected, plus installed-consumer checks with two spawn workers. This
+includes Windows Python 3.12, macOS Python 3.12, Linux Python 3.10–3.14, and Linux
+Python 3.10 with the minimum direct dependencies. The validation job passed lint,
+formatting, ty, build/metadata checks, strict README rendering, three isolated
+artifact consumers, strict Zensical, and generated-site link checks. The signed
+`v0.1.0rc1` tag points to the same candidate commit `7a5124f`.
+
 Pages is configured for GitHub Actions and HTTPS. Its canonical URL inherits the
 account's existing custom domain: `https://taishi.org/torchlocata/`.
 
+## TestPyPI rehearsal
+
+The [candidate release run](https://github.com/taishi-n/torchlocata/actions/runs/37611388927)
+passed the full matrix, quality checks, and isolated artifact consumers again.
+After `taishi-n` approved the `testpypi` environment, OIDC published
+[`0.1.0rc1`](https://test.pypi.org/project/locata-torch/0.1.0rc1/). Its wheel and
+sdist SHA-256 values matched the original validated CI artifact inventory:
+
+| Artifact | SHA-256 |
+| --- | --- |
+| `locata_torch-0.1.0rc1-py3-none-any.whl` | `99754a7501a37bdee499ab5dd2b6fde6775e012d90769ac86275560732de41fb` |
+| `locata_torch-0.1.0rc1.tar.gz` | `64fc949d1877b52692324935c06e572eb3776f1220f271bb73892687446b2b92` |
+
+A new Python 3.12.8 environment outside the checkout received normal dependencies
+from PyPI, then the exact TestPyPI version with `--no-deps`. The import resolved
+to that environment's `site-packages`. Its synthetic installed-consumer check
+passed for waveform/clocks, padding, CLI, and two spawn workers. All 12 read-only
+integration tests passed against the existing LOCATA snapshot, and the documented
+example returned a `[4, 32, 48000]` batch at 48 kHz with two spawn workers.
+
+No LOCATA archive was downloaded. Stable PyPI publication and its independent
+consumer verification follow the `v0.1.0` tag. The manual documentation workflow
+allows their results to be recorded and deployed after publication.
+
 ## Remaining verification scope
 
-Final-release payloads and execution against MATLAB remain unverified. Linux
-Python 3.10–3.14 and macOS Python 3.12 passed remotely; the corrected Windows
-fixture still needs a successful rerun. Archive-directory inspection in the
+Final-release payloads and execution against MATLAB remain unverified. The full
+configured platform/version matrix passed remotely after the ZIP-name fix.
+Archive-directory inspection in the
 [release plan](release-plan.md) does not replace payload validation.
 
 Interpolation, resampling, dense ground truth, and official evaluation remain
 outside scope. The initial reader/documentation commit is `c44f923`. Public
-package installation has not been verified because publication is still pending.
+TestPyPI installation has been verified as recorded above; stable publication and
+its consumer checks follow the stable tag.

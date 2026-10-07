@@ -83,6 +83,8 @@ Avoid root-relative paths and generated HTML paths in source Markdown. Public AP
 content is generated from `src/locata_torch` using mkdocstrings. Build in strict
 mode and run the link checker after documentation changes. The checker validates
 local pages, fragments, and assets; it does not probe external websites.
+The repository README uses absolute hosted documentation URLs so its links also
+work when rendered on PyPI outside this checkout.
 
 CI runs tests across Python 3.10–3.14 and Linux/macOS/Windows, plus minimum direct
 dependencies on Python 3.10. It runs Ruff, ty, package/metadata/content checks,
@@ -93,8 +95,16 @@ ZIP64 archives. CI never fetches LOCATA data.
 `.github/workflows/release.yml` calls the same validation workflow, then publishes
 validated artifacts through OIDC. Matching stable tags route to PyPI and RC tags
 to TestPyPI. Manual runs only validate; stable releases deploy documentation after
-publication. See [release operations](release-plan.md#pypi-release-operation) for
-publisher and protected-environment configuration.
+publication. The manual `docs.yml` workflow rebuilds and validates documentation
+from `main`, then deploys it to Pages without publishing Python packages. Use it
+to update post-publication verification records:
+
+```sh
+gh workflow run docs.yml --ref main --repo taishi-n/torchlocata
+```
+
+See [release operations](release-plan.md#pypi-release-operation) for publisher and
+protected-environment configuration.
 
 ## Contributions
 

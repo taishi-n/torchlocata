@@ -1,12 +1,9 @@
 # Getting started
 
-## Install from PyPI after publication
+## Install from PyPI
 
 Use Python 3.10 or later. The distribution name is `locata-torch`; the Python
 import name is `locata_torch`.
-
-These instructions target the first PyPI release; publication is pending. Root
-lookup, the `download` extra, and the API/CLI described here are implemented.
 
 ### With pip
 
@@ -42,7 +39,7 @@ uv add "locata-torch[download]"
 Run application scripts and installed CLI commands with `uv run`. `uv add`
 records the dependency in your `pyproject.toml` and updates the project environment
 and lockfile; see the official [uv project guide](https://docs.astral.sh/uv/guides/projects/).
-After version `0.1.0` is published, pin that release when needed with
+Pin version `0.1.0` when needed with
 `python -m pip install "locata-torch==0.1.0"` or `uv add "locata-torch==0.1.0"`.
 
 The Python package installation does not include the LOCATA corpus. Supply an
