@@ -17,11 +17,15 @@ nav = [
     { "I/O and DataLoader" = "io-and-dataloader.md" },
   ] },
   { "API reference" = "api.md" },
-  { "Development" = "development.md" },
-  { "First PyPI release plan" = "release-plan.md" },
-  { "Release notes" = "releases.md" },
-  { "References and decisions" = "references.md" },
-  { "Validation record" = "validation.md" },
+  { "Project" = [
+    { "Release notes" = "releases.md" },
+    { "References and decisions" = "references.md" },
+    { "Validation record" = "validation.md" },
+  ] },
+  { "Contributing" = [
+    { "Development" = "development.md" },
+    { "Release process" = "release-plan.md" },
+  ] },
 ]
 
 [project.theme]

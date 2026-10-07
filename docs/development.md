@@ -4,12 +4,14 @@
 
 | Path | Purpose |
 | --- | --- |
-| `src/locata_torch/` | Dataset views, collation, geometry, typed schemas, and private TXT parsing |
+| `src/locata_torch/` | Dataset views, collation, geometry, typed schemas, storage, downloader, and CLI |
 | `tests/` | Synthetic fixtures and explicitly enabled real-data integration tests |
 | `examples/read_locata.py` | Command-line example with spawn workers and a main guard |
 | `docs/` | English documentation sources |
 | `zensical.toml` | Documentation navigation, theme, and API-generation settings |
 | `scripts/check_docs_links.py` | Local-page, anchor, and asset validation for generated HTML |
+| `scripts/check_release.py` | Distribution metadata, contents, version routing, and hashes |
+| `scripts/smoke_installed.py` | Installed-package reading, CLI, and spawn checks |
 | `site/` | Generated documentation; ignored by version control |
 
 `README.md` introduces the API and links to the detailed contracts. The existing
@@ -18,7 +20,7 @@
 ## Install and run checks
 
 ```sh
-uv sync --python 3.12 --extra download --group docs --group release
+uv sync --locked --python 3.12 --extra download --group docs --group release
 uv run pytest -m "not integration"
 uv run ruff check .
 uv run ruff format --check .
@@ -54,7 +56,13 @@ LOCATA_ROOT=/path/to/LOCATA uv run pytest -m integration -v
 
 Without `LOCATA_ROOT`, integration tests skip. Do not report skipped checks as
 executed, copy real audio into the repository, or write caches beneath the corpus.
-See [validation](validation.md) for the tested snapshot and unverified platforms.
+See [validation](validation.md) for the tested snapshot, platform matrix, and
+remaining verification limits. Run the repository example against your own data:
+
+```sh
+uv run python examples/read_locata.py --root /path/to/LOCATA --workers 0
+uv run python examples/read_locata.py --root /path/to/LOCATA --workers 2
+```
 
 ## Preview and build documentation
 
@@ -97,19 +105,20 @@ validated artifacts through OIDC. Matching stable tags route to PyPI and RC tags
 to TestPyPI. Manual runs only validate; stable releases deploy documentation after
 publication. The manual `docs.yml` workflow rebuilds and validates documentation
 from `main`, then deploys it to Pages without publishing Python packages. Use it
-to update post-publication verification records:
+to publish documentation changes independently of a package release:
 
 ```sh
 gh workflow run docs.yml --ref main --repo taishi-n/torchlocata
 ```
 
-See [release operations](release-plan.md#pypi-release-operation) for publisher and
+See the [release process](release-plan.md) for publisher and
 protected-environment configuration.
 
 ## Contributions
 
-The initial commit uses a concise imperative subject. Continue focused messages
-that describe the change. Pull requests should state
+Recent history uses Conventional Commits, such as `feat: add ...` and
+`chore: release ...`. Use focused subjects with `feat`, `fix`, `docs`, or `chore`
+and describe the resulting change. Pull requests should state
 the resulting behavior, relevant documentation updates, executed checks, and
 remaining limitations, with related issues linked when applicable. Commit, push,
 and publication require a separate explicit request.

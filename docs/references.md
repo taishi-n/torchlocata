@@ -2,12 +2,11 @@
 
 ## Primary sources reviewed
 
-The following sources were inspected read-only on 2026-10-07. External readers
-were used to compare specifications; their code was not copied, translated, or
-moved into this library. The implementation is independent and does not
-redistribute LOCATA data. The package's `LICENSE` and SPDX metadata use Apache-2.0;
-LOCATA's ODC-BY 1.0 dataset license remains separate. The
-[release plan](release-plan.md) records download and packaging references.
+The following sources were reviewed on 2026-10-07. External readers informed
+specification comparisons; their code was not copied, translated, or moved into
+this library. The implementation is independent and does not redistribute LOCATA
+data. The package's `LICENSE` and SPDX metadata use Apache-2.0; LOCATA's ODC-BY 1.0
+dataset license remains separate.
 
 | Source | Reviewed version | License and use |
 | --- | --- | --- |
@@ -28,10 +27,41 @@ The implementation follows `get_truth.m`'s `R'*(h-p)` formula and
 `mycart2sph.m`'s azimuth and inclination definitions. No execution comparison
 against MATLAB has been performed.
 
-## Local snapshot
+## Storage and download design references
 
-A user-provided local LOCATA root was found and used read-only. Its local path is
-intentionally omitted and is not a default embedded in the implementation. Local
+The following tools informed path configuration and preparation. These are design
+references, without code reuse; rolling documentation and upstream license files
+were reviewed on 2026-10-07.
+
+| Source | Reviewed version | Pattern and upstream code license |
+| --- | --- | --- |
+| [Torchvision CIFAR10](https://docs.pytorch.org/vision/stable/generated/torchvision.datasets.CIFAR10.html) | 0.29 documentation | Explicit roots and opt-in download; [BSD-3-Clause](https://raw.githubusercontent.com/pytorch/vision/main/LICENSE) |
+| [TensorFlow Datasets](https://www.tensorflow.org/datasets/api_docs/python/tfds/load) | API page updated 2024-04-26 | Environment-configured storage, versioned data, separate preparation; [Apache-2.0](https://raw.githubusercontent.com/tensorflow/datasets/master/LICENSE) |
+| [Hugging Face Hub](https://huggingface.co/docs/huggingface_hub/en/guides/manage-cache) | Cache guide at the review date | Shared storage with revision-specific snapshots; [Apache-2.0](https://raw.githubusercontent.com/huggingface/huggingface_hub/main/LICENSE) |
+| [Pooch](https://www.fatiando.org/pooch/latest/api/generated/pooch.create.html) | 1.9.0 | Known-hash registries and configurable storage; [BSD-3-Clause](https://raw.githubusercontent.com/fatiando/pooch/v1.9.0/LICENSE.txt) |
+
+locata-torch separates preparation from read-only Dataset construction. Storage
+uses the data release identity, independently of Python package versions, so
+projects and virtual environments can share one installation. Focused
+standard-library HTTP, hashing, and ZIP64 code implement resume and staged
+installation without a generic download backend.
+
+[platformdirs](https://platformdirs.readthedocs.io/en/latest/api.html#platformdirs.user_data_path)
+selects persistent platform-standard storage. Its minimum version 4.3.8 and
+resolved version 4.12.3 use MIT. Optional
+[filelock](https://py-filelock.readthedocs.io/en/latest/) provides process locking;
+minimum version 3.20.0 uses Unlicense and resolved version 4.0.12 uses MIT.
+filelock is imported only by the downloader. Upstream branch license snapshots
+are reference records, not licenses assigned to this library.
+
+See [paths and storage](storage.md) for the implemented contract and pinned
+archive metadata, and the [release process](release-plan.md) for packaging and
+Trusted Publishing references.
+
+## Challenge-era snapshot
+
+An existing challenge-era LOCATA snapshot was inspected read-only. Its machine
+path is not part of the library configuration or documentation. The local
 `documentation_v2.pdf` (Version 2.0, 2018-04-05), `documentation_v3.pdf`
 (Version 3.0, 2018-04-17), and the same five `matlab_v2` functions were reviewed.
 These are challenge-era files and are distinguished from the final release.
@@ -70,7 +100,7 @@ do not constitute integration validation of the final-release archive.
 - Missing annotations use `None`; an existing empty interval uses empty tensors.
   Validity flags remain independent of VAD.
 - DOA requires exactly matched clocks. Temporal and rotation interpolation are
-  outside the initial scope.
+  not provided.
 - Nonuniform clocks remain unchanged. Only the endpoint after the last audio
   sample uses the nominal `1/fs` period.
 - Boundary comparisons alone use a `1e-12` second tolerance to avoid including an
@@ -89,14 +119,15 @@ do not constitute integration validation of the final-release archive.
   or compatibility aliases are provided.
 - Development checks use pytest, Ruff, and ty. Zensical and mkdocstrings are
   isolated in the optional `docs` dependency group. Documentation is English;
-  generated HTML is not tracked. No publishing or release workflow is configured.
+  generated HTML is not tracked. GitHub Actions validates distributions and
+  documentation before publishing through OIDC.
 
 The package does not guarantee that source audio is a perfect clean training
 target and is not a replacement for the official evaluation tools.
 
 ## Documentation tooling
 
-The migration follows the official [Zensical configuration](https://zensical.org/docs/setup/basics/),
+The documentation uses the official [Zensical configuration](https://zensical.org/docs/setup/basics/),
 [offline usage](https://zensical.org/docs/setup/offline/), and
 [mkdocstrings compatibility](https://zensical.org/docs/compatibility/mkdocs/plugins/)
 guides, with Python API collection configured according to

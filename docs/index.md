@@ -1,17 +1,24 @@
 # locata-torch
 
-Read LOCATA recordings and independent annotations through PyTorch's map-style
-`Dataset` and `DataLoader`. The `locata_torch` package returns CPU tensors and
-uses PyTorch, NumPy, SoundFile, and platformdirs at runtime.
+Read LOCATA audio and independent annotations with PyTorch's map-style `Dataset`
+and `DataLoader`. Install [locata-torch from PyPI](https://pypi.org/project/locata-torch/)
+and import `locata_torch` in your application. Python 3.10 or later is required.
 
-## Start reading data
+The library provides recording datasets, fixed-length windows, padded batches,
+LOCATA coordinate helpers, and an optional downloader. All returned tensors are
+on the CPU. It supports tasks 1–6 and the `benchmark2`, `dicit`, `dummy`, and
+`eigenmike` arrays, including multiple sources and moving arrays.
 
-[Get started](getting-started.md) with pip/uv installation instructions for the
-planned PyPI release, existing or downloaded data, a recording dataset, a
-fixed-length window view, and a padded batch. Both dataset views support PyTorch
-`Subset`, standard samplers, and shuffle. Source audio is loaded only when requested.
+## Start here
 
-The reader accepts an existing LOCATA root with this structure:
+| Goal | Guide |
+| --- | --- |
+| Install with pip or uv and load your first batch | [Getting started](getting-started.md) |
+| Share existing data across applications or download a split | [Paths and storage](storage.md) |
+| Find a class, function, or typed schema | [API reference](api.md) |
+| Use multiple workers, samplers, or variable-length batches | [I/O and DataLoader](io-and-dataloader.md) |
+
+An existing unpacked root has this structure:
 
 ```text
 LOCATA/
@@ -27,39 +34,31 @@ LOCATA/
     └── task1/...
 ```
 
-It supports tasks 1–6 and the `benchmark2`, `dicit`, `dummy`, and `eigenmike`
-arrays. Available WAV files determine the index; the reader obtains frame counts,
-channel counts, and sample rates from their headers.
+Available WAV files determine the index. Channel counts, sample rates, and frame
+counts come from their headers. Source poses, source audio, and VAD are optional;
+file presence determines availability in either split.
 
-## Understand the contract
+## Work with annotations
 
-| Guide | What it defines |
-| --- | --- |
-| [Data model](data-model.md) | Tensor shapes, units, source IDs, and missing values |
-| [Time and windows](time-and-windows.md) | Independent clocks, calendar origin, frame intervals, and annotation boundaries |
-| [Geometry and DOA](geometry.md) | World-to-array rotation and LOCATA angle conventions |
-| [I/O and DataLoader](io-and-dataloader.md) | Lazy reads, bounded caches, errors, collation, and workers |
-| [API reference](api.md) | Public classes, functions, and typed schemas from the source |
-| [Paths and storage](storage.md) | Shared roots, explicit downloads, integrity, and recovery |
+[Data model](data-model.md) defines tensor shapes, units, source IDs, and missing
+values. [Time and windows](time-and-windows.md) explains independent clocks,
+calendar origins, and window boundaries. [Geometry and DOA](geometry.md) defines
+world-to-array rotation and the LOCATA angle convention.
 
-The default reader preserves amplitudes, channel order, clocks, and invalid
-annotation rows. It does not remove silence, resample, normalize, interpolate,
-or create dense labels. Missing ground truth remains missing, independently of
-the split name.
+The reader preserves amplitudes, channel order, timestamps, and invalid annotation
+rows. It performs no implicit silence removal, resampling, normalization,
+interpolation, or dense-label conversion. Missing ground truth remains missing;
+validity flags and voice activity remain separate.
 
-## Scope and evidence
+## Project information
 
-The implementation reads existing or explicitly downloaded data, supports shared
-root configuration, and includes a pinned-release downloader. The code is
-Apache-2.0; dataset licensing is separate. The [getting-started guide](getting-started.md)
-describes PyPI installation, and the [release plan](release-plan.md) records
-release operations and validation boundaries.
-Repairing the corpus, synthesizing RIRs, training models, porting official metrics,
-and supporting other corpora remain outside the scope. This is an independent
-implementation without a TorchRIR dependency.
+Library code is Apache-2.0; LOCATA data uses separate ODC-BY 1.0 attribution
+requirements. The [reference record](references.md) identifies reviewed sources,
+licenses, and design decisions. The [validation record](validation.md) describes
+the tested configurations and unverified final-release payloads.
 
-The [reference record](references.md) identifies the official specifications,
-compared readers, versions, licenses, and unresolved assumptions. The
-[validation record](validation.md) separates synthetic tests from checks on the
-local LOCATA snapshot. See [development](development.md) to run checks or build
-this documentation.
+See [release notes](releases.md) for version history,
+[development](development.md) to contribute or build the documentation, and the
+[release process](release-plan.md) for maintainer operations. Corpus repair,
+RIR synthesis, model training, official evaluation metrics, and other corpora
+are outside the library's scope. It has no TorchRIR dependency.

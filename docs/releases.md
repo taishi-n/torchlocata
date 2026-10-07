@@ -1,38 +1,44 @@
 # Release notes
 
-## 0.1.0
+## 0.1.0 — 2026-10-07
 
-The first stable version promotes the verified TestPyPI candidate to PyPI. Its
-reader and downloader API is the same as `0.1.0rc1`. Installation instructions
-use `pip install locata-torch` or `uv add locata-torch`, with the optional
-`download` extra for explicit dataset preparation.
+Available on [PyPI](https://pypi.org/project/locata-torch/0.1.0/).
+Install with `python -m pip install locata-torch` or `uv add locata-torch`.
+Use `locata-torch[download]` to include download support.
 
-Published to [PyPI](https://pypi.org/project/locata-torch/0.1.0/) on 2026-10-07.
-Both public distribution hashes matched validated CI artifacts. Independent pip
-and uv installations passed, including the existing-data integration suite and
-spawn checks. [English documentation](https://taishi.org/torchlocata/) is hosted
-on GitHub Pages.
+### Features
 
-## 0.1.0rc1
+- Recording and fixed-window PyTorch datasets for tasks 1–6 and all four LOCATA
+  arrays, with deterministic indexing and partial WAV reads.
+- Typed CPU samples with independent clocks, array/source geometry, preserved
+  source IDs, optional source audio, and optional VAD.
+- Padded collation with waveform lengths and masks, plus Subset, sampler, shuffle,
+  and spawn-worker support.
+- Explicit LOCATA world-to-array conversion, azimuth, and inclination helpers
+  that require aligned pose clocks.
+- Shared dataset configuration through explicit roots, `LOCATA_ROOT`, or
+  completed managed storage; Dataset construction remains read-only.
+- An optional downloader for the pinned official release with checked resume,
+  archive hashes, ZIP64 extraction, process locks, installation inventories, and
+  prepared-state recovery.
+- The `locata-torch` CLI, Apache-2.0 code licensing, and English documentation.
 
-The first release candidate includes:
+### Validation and limits
 
-- Recording and fixed-window PyTorch datasets, partial WAV reads, typed CPU
-  samples, and padded collation with lengths and masks.
-- Independent clocks, array/source geometry, optional source audio and VAD,
-  preserved source IDs, and explicit LOCATA coordinate conversion.
-- Shared dataset paths through explicit roots, environment settings, or managed
-  storage, with read-only Dataset construction.
-- An optional pinned-release downloader with checked resume, hashes, ZIP64
-  extraction, locks, inventories, and prepared-state crash recovery. Original
-  ZIP names are checked even when Python normalizes or truncates them.
-- A CLI, Apache-2.0 code license, English Zensical documentation, and validated
-  wheel/sdist publication through GitHub OIDC.
+The release passed 147 synthetic tests across the configured Python 3.10–3.14
+and Linux/macOS/Windows matrix, including minimum direct dependencies. Published
+wheel and sdist hashes matched validated artifacts. Independent pip and uv
+consumers passed, including spawn workers; all 12 existing-data integration tests
+passed with the pip-installed package.
 
-Published to TestPyPI on 2026-10-07. CI passed on Python 3.10–3.14 and
-Linux/macOS/Windows, including minimum dependencies. An independent TestPyPI
-installation passed synthetic checks, the existing-data integration suite, and
-the spawn example. Validation uses small fixtures and the read-only LOCATA
-snapshot; no official archive is downloaded during release verification. Real
-final-release audio/VAD payloads remain unverified; see the
-[validation record](validation.md).
+The official final-release audio, annotation, and VAD payloads have not been
+validated through a full download. Transport and extraction tests use synthetic
+archives; real-data integration uses an existing challenge-era snapshot. See the
+[validation record](validation.md) for the exact tested scope and artifact hashes.
+
+## 0.1.0rc1 — 2026-10-07
+
+Published to [TestPyPI](https://test.pypi.org/project/locata-torch/0.1.0rc1/) as the
+release candidate for 0.1.0, with the same reader and downloader API. The candidate
+passed the CI matrix and an independent installed-package rehearsal before the
+stable release.

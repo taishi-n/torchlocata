@@ -6,13 +6,13 @@ Set `LOCATA_ROOT=/path/to/LOCATA` once in your application environment, or pass
 `root` explicitly. It identifies the unpacked directory containing `dev/` or
 `eval/`, and needs no manifest. Lookup is explicit `root`, then `LOCATA_ROOT`,
 then the managed root. Invalid configured paths raise errors without fallback.
-The selected absolute path is frozen in the Dataset, including under spawn.
+The selected absolute path is retained by the Dataset, including under spawn.
 
 Reader construction performs no network requests or directory creation. It
 never writes indexes or caches beneath a corpus. Use an explicit root to select
 an installation independently of environment settings.
 
-## Explicit preparation
+## Download and manage storage
 
 Install `locata-torch[download]`, then call `download_locata` before creating
 DataLoader workers, or use `locata-torch download --split dev`. The API accepts
@@ -41,6 +41,23 @@ splits when relying on default lookup.
 The data release key is independent of Python package versions. This avoids
 copying a large corpus whenever the library is upgraded. Each split is an entire
 official archive; task/array selection affects reading, not transfer size.
+
+## Release and disk space
+
+The downloader supports the [official final release](https://zenodo.org/records/3630471),
+v1 dated 2020-01-31, DOI `10.5281/zenodo.3630471`. Its
+[metadata API](https://zenodo.org/api/records/3630471) provides the pinned archive
+sizes and MD5 checksums. Expanded sizes come from ZIP64 directory inspection.
+
+| Split | Archive bytes | Expanded bytes | Official MD5 |
+| --- | ---: | ---: | --- |
+| dev | 6,207,354,195 | 27,136,519,350 | `d5a5417c3f6b2ed0e43581dd06f504e6` |
+| eval | 13,045,105,034 | 57,426,914,435 | `46709713350bc16c106e788920d30a8b` |
+
+Both retained ZIPs and expanded splits occupy about 103.8 GB before filesystem
+overhead; allow at least 120 GB free for a fresh installation. These estimates
+describe archive metadata, rather than measurements from a full installation.
+The downloader checks space before transfer and again before extraction.
 
 ## Integrity, resume, and recovery
 
@@ -75,10 +92,6 @@ incompatible records, or altered files raise errors; there is no automatic
 repair, merge, deletion, or overwrite. A completed split remains usable if a
 later requested split fails. Failed new extraction cleans only its own staging;
 crash remnants without a prepared manifest are not deleted automatically.
-
-Both retained ZIPs and expanded splits occupy about 103.8 GB; allow at least
-120 GB for a fresh installation. The estimate comes from official archive
-metadata, not a full installation in this checkout.
 
 ## Attribution and evidence
 
