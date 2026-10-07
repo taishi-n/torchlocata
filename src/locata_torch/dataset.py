@@ -15,6 +15,7 @@ import torch
 from torch import Tensor
 from torch.utils.data import Dataset
 
+from ._storage import resolve_root, select_splits
 from ._tables import (
     TIME_ATOL,
     LocataError,
@@ -181,7 +182,8 @@ class LocataDataset(Dataset[LocataSample]):
     data model and time-and-windows guides for detailed shapes and clock contracts.
 
     Args:
-        root: Existing LOCATA root; user-home expansion is supported.
+        root: Existing LOCATA root, or None to use LOCATA_ROOT then managed
+            storage. User-home expansion is supported. Never triggers a download.
         split: One split name, or a sequence selecting dev and/or eval.
         tasks: Task numbers from 1 through 6.
         recordings: Positive recording numbers across selected tasks, or all.
@@ -205,7 +207,7 @@ class LocataDataset(Dataset[LocataSample]):
 
     def __init__(
         self,
-        root: str | Path,
+        root: str | Path | None = None,
         *,
         split: str | Sequence[str] = "dev",
         tasks: Sequence[int] = (1, 2, 3, 4, 5, 6),
@@ -216,12 +218,8 @@ class LocataDataset(Dataset[LocataSample]):
         cache_size: int = 16,
         cache_bytes: int = 16777216,
     ):
-        self.root = Path(root).expanduser().resolve()
-        if not self.root.is_dir():
-            raise LocataError(f"{self.root}: dataset root is not a directory")
-        splits = (split,) if isinstance(split, str) else tuple(split)
-        if not splits or not set(splits) <= {"dev", "eval"}:
-            raise ValueError("split must select dev and/or eval")
+        splits = select_splits(split)
+        self.root = resolve_root(root, splits)
         if not tasks or any(_positive(task, "task") > 6 for task in tasks):
             raise ValueError("tasks must select integers from 1 through 6")
         if recordings is not None and (

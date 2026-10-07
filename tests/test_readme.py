@@ -9,8 +9,8 @@ def test_documented_python_example(make_recording, tmp_path, document):
     make_recording(array="eigenmike", frames=48000, channels=1, sample_rate=48000)
     readme = Path(__file__).parents[1] / document
     code = readme.read_text().split("```python\n", 1)[1].split("```", 1)[0]
-    # Substitute only the local corpus path; execute the documented API unchanged.
-    code = code.replace('root="~/dataset/LOCATA"', f"root={str(tmp_path)!r}")
+    # Substitute only the placeholder root; execute the documented API unchanged.
+    code = code.replace('root="/path/to/LOCATA"', f"root={str(tmp_path)!r}")
     namespace = {}
     exec(compile(code, str(readme), "exec"), namespace)
     assert tuple(namespace["waveforms"].shape) == (1, 1, 48000)

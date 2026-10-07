@@ -18,18 +18,21 @@
 ## Install and run checks
 
 ```sh
-uv sync --python 3.12
+uv sync --python 3.12 --extra download --group docs --group release
 uv run pytest -m "not integration"
 uv run ruff check .
 uv run ruff format --check .
 uv run ty check
-uv build
+uv build --no-sources --clear
+uv run twine check --strict dist/*.whl dist/*.tar.gz
+uv run python scripts/check_release.py
 ```
 
 Ruff applies an 88-column Python style with four-space indentation. Use
 `snake_case` for functions and modules, `PascalCase` for classes, and public type
 annotations. `uv run ruff format .` applies formatting. Keep runtime dependencies
-limited to PyTorch, NumPy, and SoundFile.
+focused on PyTorch, NumPy, SoundFile, and platformdirs. Filelock belongs to the
+download extra; documentation and release tools are dependency groups.
 
 Update the documented contract first, write behavioral tests and confirm the
 expected failure, then implement the smallest change and reconcile code and
@@ -81,13 +84,22 @@ content is generated from `src/locata_torch` using mkdocstrings. Build in strict
 mode and run the link checker after documentation changes. The checker validates
 local pages, fragments, and assets; it does not probe external websites.
 
-CI runs tests, Ruff, ty, package builds, strict documentation builds, and local
-link validation. It does not publish the site or package.
+CI runs tests across Python 3.10–3.14 and Linux/macOS/Windows, plus minimum direct
+dependencies on Python 3.10. It runs Ruff, ty, package/metadata/content checks,
+isolated wheel/sdist consumers, strict documentation builds, and local link
+validation. Mandatory download tests use only a local HTTP server and synthetic
+ZIP64 archives. CI never fetches LOCATA data.
+
+`.github/workflows/release.yml` calls the same validation workflow, then publishes
+validated artifacts through OIDC. Matching stable tags route to PyPI and RC tags
+to TestPyPI. Manual runs only validate; stable releases deploy documentation after
+publication. See [release operations](release-plan.md#pypi-release-operation) for
+publisher and protected-environment configuration.
 
 ## Contributions
 
-No Git history is available to establish a repository commit convention. Use
-concise imperative messages that describe the change. Pull requests should state
+The initial commit uses a concise imperative subject. Continue focused messages
+that describe the change. Pull requests should state
 the resulting behavior, relevant documentation updates, executed checks, and
 remaining limitations, with related issues linked when applicable. Commit, push,
 and publication require a separate explicit request.

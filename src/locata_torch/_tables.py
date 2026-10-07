@@ -18,7 +18,7 @@ TIME_ATOL = 1e-12  # Boundary comparisons only; returned clock values are untouc
 
 
 class LocataError(RuntimeError):
-    """A missing or malformed LOCATA input, with its path and cause."""
+    """Invalid LOCATA input, configuration, or preparation, with its path and cause."""
 
 
 def _header(stream: BinaryIO, path: Path) -> tuple[str, ...]:

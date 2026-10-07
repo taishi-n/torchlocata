@@ -5,7 +5,9 @@
 The following sources were inspected read-only on 2026-10-07. External readers
 were used to compare specifications; their code was not copied, translated, or
 moved into this library. The implementation is independent and does not
-redistribute LOCATA data. The new package's own publication license is not yet set.
+redistribute LOCATA data. The package's `LICENSE` and SPDX metadata use Apache-2.0;
+LOCATA's ODC-BY 1.0 dataset license remains separate. The
+[release plan](release-plan.md) records download and packaging references.
 
 | Source | Reviewed version | License and use |
 | --- | --- | --- |
@@ -28,8 +30,8 @@ against MATLAB has been performed.
 
 ## Local snapshot
 
-`~/datasets/LOCATA` did not exist; `~/dataset/LOCATA` was present. This is a user
-input path, not a default embedded in the implementation. Local
+A user-provided local LOCATA root was found and used read-only. Its local path is
+intentionally omitted and is not a default embedded in the implementation. Local
 `documentation_v2.pdf` (Version 2.0, 2018-04-05), `documentation_v3.pdf`
 (Version 3.0, 2018-04-17), and the same five `matlab_v2` functions were reviewed.
 These are challenge-era files and are distinguished from the final release.

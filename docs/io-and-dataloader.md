@@ -84,7 +84,7 @@ from torch.utils.data import DataLoader
 
 
 def main():
-    dataset = LocataDataset(root="~/dataset/LOCATA", arrays=("eigenmike",))
+    dataset = LocataDataset(root="/path/to/LOCATA", arrays=("eigenmike",))
     windows = dataset.windows(num_samples=48000, hop_samples=24000)
     loader = DataLoader(
         windows,

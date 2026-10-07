@@ -12,6 +12,7 @@ DataLoader](io-and-dataloader.md) for caching, collation, and worker behavior.
     options:
       members:
         - LocataDataset
+        - download_locata
         - LocataWindowDataset
         - collate_locata
         - world_to_array

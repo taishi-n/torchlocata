@@ -7,12 +7,35 @@ name = "locata-torch"
 version = "0.1.0"
 description = "Read LOCATA audio and independent annotations with PyTorch datasets"
 readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [{name = "taishi-n"}]
 requires-python = ">=3.10"
-dependencies = ["torch>=2.4", "numpy>=1.26", "soundfile>=0.12"]
+dependencies = ["torch>=2.4", "numpy>=1.26", "soundfile>=0.12", "platformdirs>=4.3.8"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Topic :: Multimedia :: Sound/Audio",
+  "Typing :: Typed",
+]
+
+[project.optional-dependencies]
+download = ["filelock>=3.20.0"]
+
+[project.scripts]
+locata-torch = "locata_torch.cli:main"
+
+[project.urls]
+Repository = "https://github.com/taishi-n/torchlocata"
+Issues = "https://github.com/taishi-n/torchlocata/issues"
+Documentation = "https://taishi-n.github.io/torchlocata/"
 
 [dependency-groups]
 dev = ["pytest>=8", "ruff>=0.11", "ty>=0.0.1"]
 docs = ["zensical>=0.0.24", "mkdocstrings-python>=1.18"]
+release = ["twine>=6.1", "packaging>=24"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/locata_torch"]

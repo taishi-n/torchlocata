@@ -1,5 +1,6 @@
 """Read LOCATA using map-style PyTorch datasets and explicit clock contracts."""
 
+from ._download import download_locata
 from ._tables import LocataError
 from .collate import collate_locata
 from .dataset import LocataDataset, LocataWindowDataset, MissingAudioWarning
@@ -39,6 +40,7 @@ __all__ = [
     "SourceVAD",
     "TimedVAD",
     "collate_locata",
+    "download_locata",
     "locata_doa",
     "world_to_array",
 ]

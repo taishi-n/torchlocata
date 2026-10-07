@@ -1,0 +1,55 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    uses: ./.github/workflows/ci.yml
+    with:
+      release_tag: ${{ github.event_name == 'push' && github.ref_name || '' }}
+
+  publish:
+    needs: validate
+    if: github.event_name == 'push' && needs.validate.outputs.index != ''
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ needs.validate.outputs.index }}
+    permissions:
+      id-token: write
+    steps:
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          enable-cache: false
+          version: "0.11.20"
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: distributions
+          path: dist/
+      - run: sha256sum --check SHA256SUMS
+        working-directory: dist
+      - name: Publish release candidate to TestPyPI
+        if: needs.validate.outputs.index == 'testpypi'
+        run: uv publish --trusted-publishing always --publish-url https://test.pypi.org/legacy/ dist/*.whl dist/*.tar.gz
+      - name: Publish stable release to PyPI
+        if: needs.validate.outputs.index == 'pypi'
+        run: uv publish --trusted-publishing always dist/*.whl dist/*.tar.gz
+
+  documentation:
+    needs: [validate, publish]
+    if: needs.validate.outputs.index == 'pypi'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

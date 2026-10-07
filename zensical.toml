@@ -1,12 +1,15 @@
 [project]
 site_name = "locata-torch"
 site_description = "LOCATA recordings and independent annotations for PyTorch"
+site_url = "https://taishi-n.github.io/torchlocata/"
+repo_url = "https://github.com/taishi-n/torchlocata"
 docs_dir = "docs"
 site_dir = "site"
 use_directory_urls = false
 nav = [
   { "Overview" = "index.md" },
   { "Getting started" = "getting-started.md" },
+  { "Paths and storage" = "storage.md" },
   { "Data contracts" = [
     { "Data model" = "data-model.md" },
     { "Time and windows" = "time-and-windows.md" },
@@ -15,6 +18,7 @@ nav = [
   ] },
   { "API reference" = "api.md" },
   { "Development" = "development.md" },
+  { "First PyPI release plan" = "release-plan.md" },
   { "References and decisions" = "references.md" },
   { "Validation record" = "validation.md" },
 ]

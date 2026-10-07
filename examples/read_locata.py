@@ -9,7 +9,7 @@ from locata_torch import LocataDataset, collate_locata
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--root", required=True)
+    parser.add_argument("--root", help="existing root; defaults to env/managed lookup")
     parser.add_argument("--split", choices=("dev", "eval"), default="dev")
     parser.add_argument(
         "--array",
