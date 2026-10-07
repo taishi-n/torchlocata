@@ -1,5 +1,20 @@
 # Release notes
 
+## 0.1.1 — Unreleased
+
+### Documentation
+
+- Organize the README and getting-started guide around installing the published
+  package with pip or uv and using it from an application.
+- Consolidate dataset paths, storage requirements, and download behavior in the
+  storage guide.
+- Replace the initial release plan with maintainer release instructions and
+  consolidate the published-version validation record.
+- Group documentation navigation into usage, project information, and
+  contributor guides.
+
+The reader and downloader APIs and dependencies are unchanged from 0.1.0.
+
 ## 0.1.0 — 2026-10-07
 
 Available on [PyPI](https://pypi.org/project/locata-torch/0.1.0/).
