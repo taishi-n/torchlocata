@@ -241,9 +241,43 @@ passed for waveform/clocks, padding, CLI, and two spawn workers. All 12 read-onl
 integration tests passed against the existing LOCATA snapshot, and the documented
 example returned a `[4, 32, 48000]` batch at 48 kHz with two spawn workers.
 
-No LOCATA archive was downloaded. Stable PyPI publication and its independent
-consumer verification follow the `v0.1.0` tag. The manual documentation workflow
-allows their results to be recorded and deployed after publication.
+No LOCATA archive was downloaded. This rehearsal preceded the stable `v0.1.0`
+tag and the public-consumer checks below.
+
+## Stable PyPI release and public consumers
+
+The signed commit `23cf99c` and signed tag `v0.1.0` identify the stable release.
+The [stable main CI run](https://github.com/taishi-n/torchlocata/actions/runs/37613092362)
+and [release run](https://github.com/taishi-n/torchlocata/actions/runs/37613092841)
+both passed the full platform/version matrix, minimum dependencies, quality and
+artifact checks, isolated consumers, and strict documentation checks. The release
+validated tag/version agreement and routed to `pypi`. After `taishi-n` approved
+that environment, OIDC published
+[`0.1.0`](https://pypi.org/project/locata-torch/0.1.0/) and deployed Pages.
+
+PyPI's exact-version JSON reported Apache-2.0, Python `>=3.10`, and the canonical
+documentation URL. Its two public distribution SHA-256 values matched the
+original validated release artifacts and their downloaded bytes:
+
+| Artifact | SHA-256 |
+| --- | --- |
+| `locata_torch-0.1.0-py3-none-any.whl` | `611a166915b28ffab0a4dec93a2ae73c5ebb2dfc0ad2463b28ca3f382eaf2fb5` |
+| `locata_torch-0.1.0.tar.gz` | `9a5440b772f0306ea7d9daa9daeeedbadea1f7023b9674655155340e0b3a9af9` |
+
+| Public-consumer check | Result |
+| --- | --- |
+| Fresh Python 3.12.8 environment: `python -m pip install "locata-torch==0.1.0"` | Installed package and normal runtime dependencies from PyPI |
+| Published import and installed smoke | Imported from the independent environment's `site-packages`; waveform/clocks, padding, CLI, and two spawn workers passed |
+| Existing LOCATA snapshot with the pip-installed version | All 12 read-only integration tests passed |
+| Documented real-data example with zero and two workers | Both returned `[4, 32, 48000]` batches at 48 kHz |
+| Separate uv project: `uv add "locata-torch[download]"` | Resolved public version `0.1.0`; installed smoke and two spawn workers passed on Python 3.13.1 |
+| Hosted overview, getting-started guide, and API reference | HTTP 200 at `https://taishi.org/torchlocata/`, `getting-started.html`, and `api.html` |
+
+All corpus verification used the existing snapshot; no LOCATA archive was
+downloaded. Synthetic downloader tests and archive-directory inspection remain
+separate from unverified real final-release payloads. Post-publication records
+are updated through the manual documentation workflow without changing or
+republishing the tagged Python artifacts.
 
 ## Remaining verification scope
 
@@ -254,5 +288,5 @@ Archive-directory inspection in the
 
 Interpolation, resampling, dense ground truth, and official evaluation remain
 outside scope. The initial reader/documentation commit is `c44f923`. Public
-TestPyPI installation has been verified as recorded above; stable publication and
-its consumer checks follow the stable tag.
+TestPyPI and PyPI installation, published artifact hashes, and hosted
+documentation have been verified as recorded above.

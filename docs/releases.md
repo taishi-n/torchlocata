@@ -7,6 +7,12 @@ reader and downloader API is the same as `0.1.0rc1`. Installation instructions
 use `pip install locata-torch` or `uv add locata-torch`, with the optional
 `download` extra for explicit dataset preparation.
 
+Published to [PyPI](https://pypi.org/project/locata-torch/0.1.0/) on 2026-10-07.
+Both public distribution hashes matched validated CI artifacts. Independent pip
+and uv installations passed, including the existing-data integration suite and
+spawn checks. [English documentation](https://taishi.org/torchlocata/) is hosted
+on GitHub Pages.
+
 ## 0.1.0rc1
 
 The first release candidate includes:

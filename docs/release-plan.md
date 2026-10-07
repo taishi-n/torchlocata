@@ -2,22 +2,23 @@
 
 ## Target and current status
 
-The first public release will include the reader, dataset path configuration,
-and a completed, explicitly invoked LOCATA downloader. The code license will be
+The first public release includes the reader, dataset path configuration,
+and an explicitly invoked LOCATA downloader. The code license is
 Apache-2.0. Keep the distribution name `locata-torch`, import name `locata_torch`,
 and CLI name `locata-torch`.
 
 Reviewed on 2026-10-07. The reader, root lookup, explicit downloader, CLI,
 Apache-2.0 license, package metadata, and validation/publication workflows are
-implemented. The `0.1.0rc1` TestPyPI rehearsal passed, including public artifact
-hashes and an independent installed consumer. Package metadata is set to `0.1.0`
-for the stable release. The target repository is `taishi-n/torchlocata`, and the
-PyPI owner is `taishi-n`. The owner confirmed both pending publishers; TestPyPI
-OIDC has succeeded. The [validation record](validation.md) separates executed
-checks from the stable publication and consumer checks that follow tagging.
-[Release notes](releases.md) describe the release.
+implemented. [`0.1.0`](https://pypi.org/project/locata-torch/0.1.0/) is published on
+PyPI following the successful `0.1.0rc1` TestPyPI rehearsal. Both OIDC uploads and
+protected-environment approvals completed. Public wheel/sdist hashes matched
+validated CI artifacts. Independent pip and uv consumers passed, including
+existing-data integration and spawn workers. The repository is
+`taishi-n/torchlocata`, and the PyPI owner is `taishi-n`. The
+[validation record](validation.md) records executed checks and the unverified
+final-release corpus payloads. [Release notes](releases.md) describe the release.
 The [getting-started guide](getting-started.md) gives the pip/uv installation and
-usage instructions intended for the completed release.
+usage instructions for the published release.
 
 ## Ideas from existing tools
 
@@ -99,7 +100,7 @@ from locata_torch import LocataDataset
 dataset = LocataDataset(split="dev", arrays=("eigenmike",))
 ```
 
-For another Python tool after publication:
+For another Python tool:
 
 ```sh
 uv add "locata-torch[download]"
@@ -235,7 +236,7 @@ Synthetic VAD tests do not count as real final-release VAD validation.
 ## PyPI release operation
 
 Package metadata identifies `taishi-n` and the repository, issue tracker, and
-planned hosted documentation URL; keep dataset citation distinct from authorship. Retain
+hosted documentation URL; keep dataset citation distinct from authorship. Retain
 `py.typed`, declare the download extra and CLI entry point, and include `LICENSE`
 in wheel and sdist. Recheck name availability immediately before setup: PyPI's
 JSON endpoint returned `404` for `locata-torch` on 2026-10-07, which does not reserve
@@ -266,12 +267,13 @@ environments `pypi`/`testpypi` are restricted to `v*` tags and require review by
 `taishi-n`; `github-pages` allows `v*` tags and `main` for explicit documentation
 updates. GitHub Pages is enabled with source
 **GitHub Actions** and HTTPS. The site inherits the account's existing custom
-domain, making its canonical target `https://taishi.org/torchlocata/`; it is not
-yet deployed. No account-wide domain setting was changed.
+domain, making its canonical URL `https://taishi.org/torchlocata/`. The stable
+release workflow deployed it successfully; overview, tutorial, and API pages
+returned HTTP 200. No account-wide domain setting was changed.
 
-Register a pending publisher independently on
+The first release registered pending publishers independently on
 [PyPI](https://pypi.org/manage/account/publishing/) and
-[TestPyPI](https://test.pypi.org/manage/account/publishing/):
+[TestPyPI](https://test.pypi.org/manage/account/publishing/) with these values:
 
 | Field | Value |
 | --- | --- |
