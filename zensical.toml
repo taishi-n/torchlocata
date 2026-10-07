@@ -1,0 +1,48 @@
+[project]
+site_name = "locata-torch"
+site_description = "LOCATA recordings and independent annotations for PyTorch"
+docs_dir = "docs"
+site_dir = "site"
+use_directory_urls = false
+nav = [
+  { "Overview" = "index.md" },
+  { "Getting started" = "getting-started.md" },
+  { "Data contracts" = [
+    { "Data model" = "data-model.md" },
+    { "Time and windows" = "time-and-windows.md" },
+    { "Geometry and DOA" = "geometry.md" },
+    { "I/O and DataLoader" = "io-and-dataloader.md" },
+  ] },
+  { "API reference" = "api.md" },
+  { "Development" = "development.md" },
+  { "References and decisions" = "references.md" },
+  { "Validation record" = "validation.md" },
+]
+
+[project.theme]
+language = "en"
+font = false
+features = [
+  "content.code.copy",
+  "navigation.footer",
+  "navigation.sections",
+  "navigation.top",
+  "search.highlight",
+]
+
+[project.plugins.offline]
+
+[project.plugins.mkdocstrings.handlers.python]
+paths = ["src"]
+
+[project.plugins.mkdocstrings.handlers.python.options]
+docstring_style = "google"
+inherited_members = false
+filters = ["!^_"]
+members_order = "source"
+merge_init_into_class = true
+separate_signature = true
+show_if_no_docstring = true
+show_root_heading = true
+show_signature_annotations = true
+show_source = true

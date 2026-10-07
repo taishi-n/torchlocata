@@ -1,0 +1,35 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "locata-torch"
+version = "0.1.0"
+description = "Read LOCATA audio and independent annotations with PyTorch datasets"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["torch>=2.4", "numpy>=1.26", "soundfile>=0.12"]
+
+[dependency-groups]
+dev = ["pytest>=8", "ruff>=0.11", "ty>=0.0.1"]
+docs = ["zensical>=0.0.24", "mkdocstrings-python>=1.18"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/locata_torch"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["integration: read-only checks requiring explicit LOCATA_ROOT"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.ty.environment]
+python-version = "3.10"
+
+[tool.ty.src]
+include = ["src", "examples", "scripts"]
