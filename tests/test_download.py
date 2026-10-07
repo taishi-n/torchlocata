@@ -510,6 +510,7 @@ def test_extraction_failure_cleans_only_owned_staging(
         ("dev/../escape",),
         ("dev/C:/escape",),
         ("dev\\escape",),
+        ("dev/null\x00tail",),
         ("eval/wrong",),
         ("dev/a", "dev/a"),
         ("dev/A", "dev/a"),
@@ -523,7 +524,10 @@ def test_unsafe_members_are_rejected_before_publish(http_archives, tmp_path, nam
     stream = io.BytesIO()
     with zipfile.ZipFile(stream, "w") as archive:
         for name in names:
-            archive.writestr(name, b"data")
+            member = zipfile.ZipInfo(name)
+            # Preserve raw names instead of letting Windows replace backslashes.
+            member.filename = name
+            archive.writestr(member, b"data")
     with http_archives({"dev": stream.getvalue()}):
         with pytest.raises(LocataError, match="unsafe|collision|duplicate|top-level"):
             download_locata(data_dir=tmp_path / "store")

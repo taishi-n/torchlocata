@@ -1,7 +1,7 @@
 [project]
 site_name = "locata-torch"
 site_description = "LOCATA recordings and independent annotations for PyTorch"
-site_url = "https://taishi-n.github.io/torchlocata/"
+site_url = "https://taishi.org/torchlocata/"
 repo_url = "https://github.com/taishi-n/torchlocata"
 docs_dir = "docs"
 site_dir = "site"
@@ -19,6 +19,7 @@ nav = [
   { "API reference" = "api.md" },
   { "Development" = "development.md" },
   { "First PyPI release plan" = "release-plan.md" },
+  { "Release notes" = "releases.md" },
   { "References and decisions" = "references.md" },
   { "Validation record" = "validation.md" },
 ]

@@ -57,10 +57,11 @@ and the publisher's MD5 must match before extraction. MD5 checks integrity again
 the publisher's metadata; the source remains pinned to official HTTPS URLs.
 Completed archives are retained for offline re-extraction.
 
-The downloader checks available space, validates all ZIP64 member paths and
-types, rejects collisions, symlinks, and non-portable Windows filenames, and
-streams extraction with ZIP CRC
-checks. It writes to a fresh staging directory on the destination filesystem.
+The downloader checks available space and validates original ZIP64 member names,
+including names changed by Python's platform-specific normalization. It rejects
+unsafe paths, types, collisions, symlinks, and non-portable Windows filenames, and
+streams extraction with ZIP CRC checks. It writes to a fresh staging directory
+on the destination filesystem.
 A prepared manifest precedes atomic split installation; a complete manifest
 follows it. An interruption between these operations is recovered by checking
 the recorded inventory. Partial extraction remains outside the readable root.

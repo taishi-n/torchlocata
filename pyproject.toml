@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "locata-torch"
-version = "0.1.0"
+version = "0.1.0rc1"
 description = "Read LOCATA audio and independent annotations with PyTorch datasets"
 readme = "README.md"
 license = "Apache-2.0"
@@ -30,7 +30,7 @@ locata-torch = "locata_torch.cli:main"
 [project.urls]
 Repository = "https://github.com/taishi-n/torchlocata"
 Issues = "https://github.com/taishi-n/torchlocata/issues"
-Documentation = "https://taishi-n.github.io/torchlocata/"
+Documentation = "https://taishi.org/torchlocata/"
 
 [dependency-groups]
 dev = ["pytest>=8", "ruff>=0.11", "ty>=0.0.1"]

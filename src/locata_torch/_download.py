@@ -234,6 +234,9 @@ def _zip_inventory(
     files: dict[str, dict[str, int]] = {}
     directories: set[str] = set()
     for member in members:
+        # ZipInfo can replace Windows separators or truncate a NUL-bearing name.
+        if member.orig_filename != member.filename:
+            raise LocataError(f"{member.orig_filename!r}: unsafe original ZIP name")
         name = member.filename[:-1] if member.is_dir() else member.filename
         parts = relative_parts(name)
         if parts[0] != spec.split or (len(parts) == 1 and not member.is_dir()):

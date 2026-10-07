@@ -187,14 +187,35 @@ The public target repository `taishi-n/torchlocata` and local `origin` were crea
 `pypi` and `testpypi` environments require `taishi-n` approval and version tags;
 `github-pages` is tag-restricted. The owner confirmed PyPI/TestPyPI pending
 publisher registration; the OIDC upload will verify that configuration. Push,
-remote CI, TestPyPI rehearsal, PyPI publication, and Pages deployment are pending.
+remote CI, TestPyPI rehearsal, PyPI publication, and Pages deployment were pending
+at the end of local preparation.
+
+## Release candidate and remote CI
+
+The signed preparation commit `e5318cc` was pushed to `main`. The
+[initial remote CI run](https://github.com/taishi-n/torchlocata/actions/runs/37610027490)
+passed all Linux Python 3.10–3.14 jobs, the Linux minimum-dependency job, and the
+macOS Python 3.12 job. Each passed the mandatory suite and installed-consumer
+spawn check. The Windows suite passed 145 tests and failed the backslash ZIP-name
+fixture: Windows had normalized its name before it was written.
+
+The fixture now preserves raw ZIP names. A new NUL-name regression also failed
+before a fix that rejects normalization or truncation of original member names.
+The corrected local suite passed 147 tests, with 12 integration tests deselected,
+on Python 3.12.8. The candidate must pass the full matrix before its tag is pushed.
+TestPyPI/PyPI publication and public consumer installation remain pending.
+Candidate lint, formatting (41 Python files), type checks, strict README
+rendering, wheel/sdist inspection, and `v0.1.0rc1` routing passed locally. The
+strict Zensical build passed with 13 pages and 1,451 local references.
+
+Pages is configured for GitHub Actions and HTTPS. Its canonical URL inherits the
+account's existing custom domain: `https://taishi.org/torchlocata/`.
 
 ## Remaining verification scope
 
-Final-release payloads, execution against MATLAB, Linux/Windows execution, and
-full-suite Python 3.11/3.13/3.14 runs remain unverified locally. The CI matrix
-covers Python 3.10–3.14 and Linux/macOS/Windows, but remote results must be
-recorded separately after execution. Archive-directory inspection in the
+Final-release payloads and execution against MATLAB remain unverified. Linux
+Python 3.10–3.14 and macOS Python 3.12 passed remotely; the corrected Windows
+fixture still needs a successful rerun. Archive-directory inspection in the
 [release plan](release-plan.md) does not replace payload validation.
 
 Interpolation, resampling, dense ground truth, and official evaluation remain
