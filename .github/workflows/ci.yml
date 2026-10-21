@@ -49,7 +49,7 @@ jobs:
           version: "0.11.20"
       - run: uv venv
       # CPU builds keep Linux runners free of unnecessary CUDA dependencies.
-      - run: uv pip install --torch-backend cpu ".[download]" pytest
+      - run: uv pip install --torch-backend cpu ".[download,plot]" pytest
       - run: uv run --no-sync pytest -m 'not integration'
       - run: uv run --no-sync python scripts/smoke_installed.py
 
@@ -65,7 +65,7 @@ jobs:
           version: "0.11.20"
       - run: uv venv
       - run: >-
-          uv pip install --torch-backend cpu ".[download]" pytest
+          uv pip install --torch-backend cpu ".[download,plot]" pytest
           torch==2.4.0 numpy==1.26.0 soundfile==0.12.0
           platformdirs==4.3.8 filelock==3.20.0
       - run: uv run --no-sync pytest -m 'not integration'
@@ -85,7 +85,7 @@ jobs:
         with:
           python-version: "3.12"
           version: "0.11.20"
-      - run: uv sync --locked --extra download --group docs --group release
+      - run: uv sync --locked --extra download --extra plot --group docs --group release
       - run: uv run --no-sync ruff check .
       - run: uv run --no-sync ruff format --check .
       - run: uv run --no-sync ty check

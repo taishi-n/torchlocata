@@ -54,14 +54,17 @@ def distributions(tmp_path):
     metadata = (
         "Metadata-Version: 2.4\nName: locata-torch\nVersion: 0.1.0\n"
         "Requires-Python: >=3.10\nLicense-Expression: Apache-2.0\n"
-        "License-File: LICENSE\nProvides-Extra: download\n"
+        "License-File: LICENSE\nLicense-File: NOTICE\n"
+        "Provides-Extra: download\nProvides-Extra: plot\n"
         "Requires-Dist: torch>=2.4\nRequires-Dist: numpy>=1.26\n"
         "Requires-Dist: soundfile>=0.12\nRequires-Dist: platformdirs>=4.3.8\n"
         'Requires-Dist: filelock>=3.20.0; extra == "download"\n'
+        'Requires-Dist: matplotlib>=3.8; extra == "plot"\n'
     )
     wheel_files = {
         f"{info}/METADATA": metadata,
         f"{info}/licenses/LICENSE": "Apache License\nVersion 2.0",
+        f"{info}/licenses/NOTICE": "LOCATA MATLAB attribution",
         f"{info}/entry_points.txt": (
             "[console_scripts]\nlocata-torch = locata_torch.cli:main\n"
         ),
@@ -71,6 +74,7 @@ def distributions(tmp_path):
     sdist_files = {
         "PKG-INFO": metadata,
         "LICENSE": "Apache License\nVersion 2.0",
+        "NOTICE": "LOCATA MATLAB attribution",
         "pyproject.toml": '[project]\nname = "locata-torch"\nversion = "0.1.0"\n',
         "src/locata_torch/py.typed": "",
         "src/locata_torch/__init__.py": "",

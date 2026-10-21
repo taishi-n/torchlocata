@@ -55,7 +55,7 @@ def _metadata(raw: bytes, expected_version: str) -> None:
         raise ValueError("distribution requires the wrong Python range")
     if metadata.get("License-Expression") != "Apache-2.0" or metadata.get_all(
         "License-File"
-    ) != ["LICENSE"]:
+    ) != ["LICENSE", "NOTICE"]:
         raise ValueError("distribution license metadata is incomplete")
     requirements = [
         Requirement(value) for value in metadata.get_all("Requires-Dist", [])
@@ -70,12 +70,18 @@ def _metadata(raw: bytes, expected_version: str) -> None:
         for req in requirements
         if req.marker is None or req.marker.evaluate({"extra": "download"})
     }
+    plot = {
+        canonicalize_name(req.name)
+        for req in requirements
+        if req.marker is None or req.marker.evaluate({"extra": "plot"})
+    }
     if (
         base != {"torch", "numpy", "soundfile", "platformdirs"}
         or download != base | {"filelock"}
-        or metadata.get_all("Provides-Extra") != ["download"]
+        or plot != base | {"matplotlib"}
+        or metadata.get_all("Provides-Extra") != ["download", "plot"]
     ):
-        raise ValueError("distribution runtime/download dependencies are incorrect")
+        raise ValueError("distribution runtime/optional dependencies are incorrect")
 
 
 def check_distributions(dist: Path, expected_version: str) -> tuple[Path, Path]:
@@ -96,7 +102,11 @@ def check_distributions(dist: Path, expected_version: str) -> tuple[Path, Path]:
         names = archive.namelist()
         _check_members(names)
         info = f"locata_torch-{expected_version}.dist-info"
-        for required in ("locata_torch/py.typed", f"{info}/licenses/LICENSE"):
+        for required in (
+            "locata_torch/py.typed",
+            f"{info}/licenses/LICENSE",
+            f"{info}/licenses/NOTICE",
+        ):
             if required not in names:
                 raise ValueError(f"wheel missing {required}")
         _metadata(archive.read(f"{info}/METADATA"), expected_version)
@@ -107,7 +117,12 @@ def check_distributions(dist: Path, expected_version: str) -> tuple[Path, Path]:
         names = archive.getnames()
         _check_members(names)
         root = sdist.name.removesuffix(".tar.gz")
-        for required in ("LICENSE", "pyproject.toml", "src/locata_torch/py.typed"):
+        for required in (
+            "LICENSE",
+            "NOTICE",
+            "pyproject.toml",
+            "src/locata_torch/py.typed",
+        ):
             if f"{root}/{required}" not in names:
                 raise ValueError(f"sdist missing {required}")
         stream = archive.extractfile(f"{root}/PKG-INFO")

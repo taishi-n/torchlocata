@@ -1,0 +1,16 @@
+locata-torch
+
+The explicit localization and evaluation algorithms are based on the LOCATA
+organizers' MATLAB I/O and Evaluation Frameworks by Christine Evers, Heiner
+Loellmann, and the LOCATA contributors:
+https://github.com/cevers/sap_locata_io/tree/632468f49b13ca5a9f2f51c064d91183c06622fa
+https://github.com/cevers/sap_locata_eval/tree/2787cdabf21bc96453c0d4f3c66db9c9c9f40434
+
+The reviewed MATLAB headers state Open Data Commons Attribution License
+(ODC-BY) v1.0: https://opendatacommons.org/licenses/by/1-0/
+This is an independently written Python algorithmic reimplementation with
+documented behavioral changes. No MATLAB source, corpus data, or third-party
+Hungarian/Munkres implementation is bundled. Python source is Apache-2.0.
+For attribution, formulas, changes, and the separate LOCATA corpus license, see:
+https://taishi.org/torchlocata/analysis.html
+https://taishi.org/torchlocata/references.html
