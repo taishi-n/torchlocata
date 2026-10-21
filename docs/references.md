@@ -148,7 +148,7 @@ do not constitute integration validation of the final-release archive.
 - The challenge-era snapshot had no VAD files. Initial naming and value tests
   used official documentation, the SRP-DNN `VAD` column, and synthetic fixtures.
   Later final-release eval VAD checks are recorded separately in
-  [validation](validation.md#unreleased-matlab-based-analysis-update-2026-10-21).
+  [validation](validation.md#matlab-based-analysis-implementation-2026-10-21).
 - No dense-label conversion, training-transform framework, general plugin system,
   or compatibility aliases are provided.
 - Development checks use pytest, Ruff, and ty. Zensical and mkdocstrings are

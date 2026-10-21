@@ -67,6 +67,6 @@ are outside the raw reader's scope. Explicit analysis helpers provide the
 documented LOCATA-based metric profile; historical MATLAB execution equivalence
 has not been established. It has no TorchRIR dependency.
 
-The analysis layer is currently unreleased; install it from source. The
-[getting-started guide](getting-started.md) covers the reader and downloader
-available through PyPI.
+The analysis APIs require version 0.2.0 or later. Plotting additionally requires
+the `plot` extra. The [getting-started guide](getting-started.md) covers
+installation, recording reads, and downloads.

@@ -1,6 +1,9 @@
 # 検証記録
 
-## 多言語ドキュメント: 2026-10-21 {#bilingual-documentation-2026-10-21}
+## 0.2.0 の公開準備: 2026-10-21 {#020-release-preparation-2026-10-21}
+
+必須の合成テストは 193 件通過し、integration 18 件を対象外としました。
+以下の実データ結果は先に行った解析実装の検証によるもので、文書とバージョンの変更に対する integration の再実行はしていません。
 
 英語と日本語の各 15 ページを用意しています。英語の既存 URL は保ち、日本語は `ja/` に配置します。
 両言語の strict build と local link を検証し、ページの対応と HTML の言語設定を確認しました。
@@ -9,9 +12,9 @@ Zensical 標準のヘッダーメニューには、公開サイトの各言語�
 API のシグネチャと docstring は共通の Python module から生成します。
 日本語の API ページには機能一覧を添え、共通の英語 docstring を掲載しています。
 
-## 未リリースの MATLAB ベース解析: 2026-10-21 {#unreleased-matlab-based-analysis-update-2026-10-21}
+## MATLAB ベース解析の実装検証: 2026-10-21 {#matlab-based-analysis-implementation-2026-10-21}
 
-以下は現在のソース変更に対する確認で、新しい PyPI release の検証ではありません。
+以下は上記の公開準備に先立って行った、解析実装の検証です。
 参照 MATLAB の commit、式、変更点、指標定義 `locata-torch-v1` は[解析ガイド](analysis.md)に記載しています。
 [NOTICE](https://github.com/taishi-n/torchlocata/blob/main/NOTICE) は wheel / sdist の両方に含めています。
 データ本体はすべて読み取り専用で扱い、この更新のための LOCATA アーカイブのダウンロードはしていません。
@@ -27,7 +30,8 @@ API のシグネチャと docstring は共通の Python module から生成し�
 | 独立したインストール環境 | Matplotlib を必須にせず、読み込み、解析、JSON / CSV / NPZ の往復、公式形式の出力、CLI、spawn 2 worker が通過。 |
 | 一連の実行例 | 最終 eval の task 1、recording 1、benchmark2 全体で、粗い MUSIC 格子、評価、bundle / submission 出力、PNG を確認。動作確認であり、baseline の精度 benchmark ではない。 |
 
-複数 platform の CI 設定にも `plot` extra を加えていますが、この更新に対する remote matrix は実行していません。
+複数 platform の CI は `plot` extra を含めて実行します。
+branch や tag の push でリモート検証が動くため、最終結果は [CI workflow](https://github.com/taishi-n/torchlocata/actions/workflows/ci.yml) と [release workflow](https://github.com/taishi-n/torchlocata/actions/workflows/release.yml) の実行記録を参照してください。
 
 新しい実データケースは各 eval task の recording 1 です。
 task 1〜6 に対して順に benchmark2、dicit、dummy、eigenmike、eigenmike、benchmark2 を使い、中ほどの 1 秒を解析しました。

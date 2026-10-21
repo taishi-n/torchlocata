@@ -188,7 +188,7 @@ provided. The runtime manifest is additional provenance, not a Challenge field.
 
 ## End-to-end use
 
-The new APIs are unreleased. Clone the
+These APIs require version 0.2.0 or later. To run the repository example, clone the
 [source repository](https://github.com/taishi-n/torchlocata), then run the
 [analysis example](https://github.com/taishi-n/torchlocata/blob/main/examples/analyze_locata.py)
 from its root with the optional plot extra installed:

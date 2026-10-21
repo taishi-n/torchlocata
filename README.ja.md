@@ -134,13 +134,11 @@ source 音声が無響の clean speech であることは保証していませ�
 
 ## 定位と評価
 
-ここで説明する定位・評価 API はソースリポジトリで利用でき、PyPI では未リリースです。
-利用する場合は[ソースリポジトリ](https://github.com/taishi-n/torchlocata)を取得し、その root でインストールしてください。
+ここで説明する定位・評価 API には 0.2.0 以降が必要です。
+診断用の描画も使う場合は `plot` extra を含めてインストールしてください。
 
 ```sh
-git clone https://github.com/taishi-n/torchlocata.git
-cd torchlocata
-python -m pip install ".[plot]"
+python -m pip install "locata-torch[plot]>=0.2.0"
 ```
 
 解析 API は主催者の MATLAB [I/O framework](https://github.com/cevers/sap_locata_io/tree/632468f49b13ca5a9f2f51c064d91183c06622fa) と [evaluation framework](https://github.com/cevers/sap_locata_eval/tree/2787cdabf21bc96453c0d4f3c66db9c9c9f40434) に基づきます。

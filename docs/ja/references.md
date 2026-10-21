@@ -98,7 +98,7 @@ snapshot のアレイ WAV は dev 72、eval 154 件でした。次の既存デ�
 - 境界の比較だけに `1e-12` 秒の許容差を使います。元の時刻と 4 ms のずれは保持します。
 - raw reader は有限でない world 座標と無効行も保持し、DOA helper は有限の幾何情報だけを受け付けます。
 - snapshot には、hendrik の `dev/task3/recording2/dummy` に 53 組、christine の `dev/task5/recording1/eigenmike` に 210 組、christine の `dev/task6/recording3/benchmark2` に 115 組の source pose 重複時刻がありました。注釈は単調非減少、音声は狭義単調増加とし、注釈行はすべて保持します。
-- Challenge 時代の snapshot に VAD はなく、初期の名前・値のテストには公式資料、SRP-DNN の `VAD` 列、合成 fixture を使いました。その後の最終 eval の VAD 検証は[検証記録](validation.md#unreleased-matlab-based-analysis-update-2026-10-21)に分けて記載しています。
+- Challenge 時代の snapshot に VAD はなく、初期の名前・値のテストには公式資料、SRP-DNN の `VAD` 列、合成 fixture を使いました。その後の最終 eval の VAD 検証は[検証記録](validation.md#matlab-based-analysis-implementation-2026-10-21)に分けて記載しています。
 - dense なラベルへの変換、学習変換 framework、汎用 plugin、互換性の別名は提供していません。
 - 開発には pytest、Ruff、ty、文書には `docs` group の Zensical と mkdocstrings を使います。ガイドは英語と日本語で提供し、生成 HTML は追跡しません。GitHub Actions は配布物と文書を検証してから OIDC で公開します。
 

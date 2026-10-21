@@ -143,14 +143,11 @@ matched pose clocks and returns azimuth from +y in `[-pi, pi)`, inclination from
 
 ## Localization and evaluation
 
-The localization and evaluation APIs in this section are available from the
-source repository and have not yet been released on PyPI. Clone the
-[repository](https://github.com/taishi-n/torchlocata) and install from its root:
+The localization and evaluation APIs require version 0.2.0 or later.
+Install the `plot` extra to include diagnostic plotting:
 
 ```sh
-git clone https://github.com/taishi-n/torchlocata.git
-cd torchlocata
-python -m pip install ".[plot]"
+python -m pip install "locata-torch[plot]>=0.2.0"
 ```
 
 The explicit analysis APIs are based on the organizers' MATLAB

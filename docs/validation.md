@@ -1,6 +1,10 @@
 # Validation record
 
-## Bilingual documentation: 2026-10-21
+## 0.2.0 release preparation: 2026-10-21
+
+The mandatory synthetic suite passed 193 cases; 18 integration cases were
+deselected. Real-data results below come from the earlier analysis checks;
+integration was not repeated for the documentation and version changes.
 
 The site contains 15 guides in each language. English URLs are unchanged;
 Japanese pages use `ja/`. Strict builds and local-link checks cover both
@@ -12,9 +16,9 @@ API signatures and source docstrings are generated from the same Python modules;
 the Japanese API page includes a Japanese overview with the shared English
 docstrings.
 
-## Unreleased MATLAB-based analysis update: 2026-10-21
+## MATLAB-based analysis implementation: 2026-10-21
 
-These checks apply to the current source changes, not a new PyPI release.
+These checks describe the analysis implementation before the release checks above.
 The [analysis guide](analysis.md) records the exact MATLAB commits, formulas,
 intentional corrections, and the `locata-torch-v1` metric profile.
 [NOTICE](https://github.com/taishi-n/torchlocata/blob/main/NOTICE) is
@@ -32,8 +36,10 @@ no LOCATA archive was downloaded for this update.
 | Installed consumer | A wheel installed into an independent environment passed reading, analysis, JSON/CSV/NPZ round-trip, official-style export, CLI, and two spawn workers without requiring Matplotlib. |
 | End-to-end example | Full final-eval task 1, recording 1, benchmark2 completed coarse-grid MUSIC, evaluation, bundle/submission export, and PNG generation. This is an execution check, not a baseline accuracy benchmark. |
 
-The configured multi-platform CI matrix was updated to install the plot extra;
-that remote matrix has not been run for this update.
+The configured multi-platform CI matrix installs the plot extra. Branch and tag
+pushes run it remotely; see the [CI workflow runs](https://github.com/taishi-n/torchlocata/actions/workflows/ci.yml)
+and [release workflow runs](https://github.com/taishi-n/torchlocata/actions/workflows/release.yml)
+for the final remote results.
 
 The new real-data cases use recording 1 of each eval task: benchmark2, dicit,
 dummy, eigenmike, eigenmike, and benchmark2 for tasks 1–6, respectively. They

@@ -152,7 +152,8 @@ DOA の方位角、任意の傾斜角、一貫した文字列 ID に対応しま
 
 ## 一連の処理を実行する {#end-to-end-use}
 
-解析 API は未リリースです。[ソースリポジトリ](https://github.com/taishi-n/torchlocata)を取得し、root で `plot` extra をインストールして[解析例](https://github.com/taishi-n/torchlocata/blob/main/examples/analyze_locata.py)を実行します。
+解析 API には 0.2.0 以降が必要です。
+リポジトリの例を実行するには、[ソースリポジトリ](https://github.com/taishi-n/torchlocata)を取得し、root で `plot` extra をインストールして[解析例](https://github.com/taishi-n/torchlocata/blob/main/examples/analyze_locata.py)を実行します。
 
 ```sh
 git clone https://github.com/taishi-n/torchlocata.git

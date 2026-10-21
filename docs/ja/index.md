@@ -56,4 +56,5 @@ reader は振幅、チャンネル順、時刻、無効な注釈行を保持し�
 解析 API は LOCATA に基づく指標を別途提供します。MATLAB を実行した数値比較や過去の leaderboard の再現は確認していません。
 TorchRIR への依存はありません。
 
-解析 API は未リリースのため、ソースからインストールします。PyPI で利用できる reader と downloader は[使い始める](getting-started.md)を参照してください。
+解析 API には 0.2.0 以降が必要です。描画には `plot` extra も必要です。
+インストール、録音の読み込み、ダウンロードは[使い始める](getting-started.md)を参照してください。
