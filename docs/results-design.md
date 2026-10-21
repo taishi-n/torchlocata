@@ -1,16 +1,15 @@
 # Portable result storage and aggregation
 
-Per-recording evaluation returns ordinary typed
-dictionaries and CPU tensors. Persistence uses versioned JSON, CSV, and optional
+Per-recording evaluation returns typed dictionaries and CPU tensors.
+Persistence uses versioned JSON, CSV, and optional
 NPZ; plotting returns figures, leaving the destination to the caller.
 
 ## Goals
 
-Support Python, MATLAB, R, Julia, command-line tools, and later reanalysis without
-requiring MATLAB, pandas, Arrow, or Python pickle. Preserve original source and
-track IDs, clock origins, units, missingness, evaluation parameters, and the exact
-grouping and denominator used for every reported metric. Keep output separate
-from the read-only LOCATA corpus.
+JSON and CSV make results readable from Python, MATLAB, R, Julia, and command-line
+tools. The files retain source and track IDs, clock origins, units, missing values,
+evaluation parameters, grouping, and metric denominators for later reanalysis.
+Outputs are stored separately from the read-only LOCATA corpus.
 
 ## Bundle layout
 
@@ -32,16 +31,16 @@ scalars and rejects NaN/Infinity. Arrays are not embedded in the manifest.
 
 CSV files use a documented header, one observation per row, stable string IDs,
 and SI units named in columns. Empty numeric cells mean unavailable, never zero.
-Keep a reason column and eligible/observed counts. The per-source and per-period
+Reason columns and eligible/observed counts explain missing values. Per-source and per-period
 tables retain sufficient statistics for later aggregation. No spreadsheet
 formulas, Python object representations, or nested dict strings are written.
 
-Optional compressed NPZ files contain only numeric/boolean/string arrays, with
+Optional compressed NPZ files contain only numeric and boolean arrays, with
 `allow_pickle=False` on read. JSON describes shapes and units. NaN is allowed
 only in arrays with documented unknown/error semantics. NPZ is convenient for
 large Python workflows; the CSV tables remain the interchange baseline for
-tools without an NPZ reader. A future frame-level CSV option should be explicit
-because it can be very large. No MAT, HDF5, or Parquet dependency is required.
+tools without an NPZ reader. Frame-level CSV export is not available.
+No MAT, HDF5, or Parquet dependency is required.
 
 ## Aggregation contract
 
@@ -49,11 +48,11 @@ Group explicitly by corpus release, split, task, array, algorithm configuration,
 and metric-definition identifier. Reject incompatible evaluation configurations.
 Never silently mix dev/eval, gate thresholds, or angle conventions.
 
-Offer two named weighting choices: equal recording weight and pooled eligible
-observations. Record the choice in every summary. Pool detection hits/opportunities
-for detection probability, false-track counts/duration for false alarm rate, and
-angle-error sums/associated-frame counts for angular errors. Preserve separate
-speech-active duration and recording duration. Latency excludes completely missed
+Choose equal recording weight (`recording`) or pooled eligible observations
+(`pooled`). Each summary records the choice. Pooled detection probability uses
+hits/opportunities, false-alarm rate uses false-track counts/duration, and angular
+error uses error sums/associated-frame counts. Speech-active duration and recording
+duration remain separate. Latency excludes completely missed
 periods from its mean while reporting their count and detection probability.
 Undefined values are omitted with an explicit denominator and missing count;
 an all-missing group remains missing. Do not average precomputed means without

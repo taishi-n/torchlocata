@@ -1,10 +1,9 @@
 # MATLAB-based localization and evaluation
 
-These explicit analysis functions are algorithmic reimplementations based on the
-LOCATA organizers' MATLAB tools. They are not implicit Dataset preprocessing and
-use the documented metric profile rather than claim historical leaderboard
-equivalence. The raw
-reader keeps its original clocks, invalid rows, and missing annotations.
+These analysis functions reimplement algorithms from the LOCATA organizers'
+MATLAB tools. Call them separately from Dataset loading. The raw reader retains
+the original clocks, invalid rows, and missing annotations. Evaluation uses the
+documented metric profile; historical leaderboard equivalence is unverified.
 
 ## Provenance
 
@@ -106,7 +105,8 @@ in `[-pi, pi)`, and inclination from +z is in `[0, pi]`. NaN azimuth means no
 estimate at that time. Missing inclination is `None`. IDs must be nonempty and
 unique. Repeated quantized times use ordered occurrences when multiplicities
 agree with ground truth. Conflicting duplicates with unequal multiplicities
-raise; identical repeated estimates may be reused. Track time origins must match ground truth. A timestamp absent from a
+raise; identical repeated estimates may be reused. Track time origins must match
+ground truth. A timestamp absent from a
 track means no detection; evaluation does not interpolate estimates.
 
 `evaluate_locata(truth, tracks, config=...)` requires source DOA and complete,
@@ -137,15 +137,14 @@ duration. Track latency is first detection minus period start. Completely missed
 periods have unavailable latency and remain in detection/missed-period counts.
 Track swaps compare each new association to the source's last assigned track,
 including across misses and speech inactivity, as in the MATLAB reference.
-Fragmentation
-counts missed-to-detected transitions, including delayed acquisition, plus
+Fragmentation counts missed-to-detected transitions, including delayed acquisition, plus
 swaps, as in `measures.m`. Rates pool counts over active-source-period duration.
 `sources` and `periods` preserve the corresponding sufficient statistics.
 
 ## Deliberate changes from the MATLAB evaluator
 
-This is metric profile `locata-torch-v1`, not a claim of historical leaderboard
-equivalence. Corrections are explicit and tested:
+Metric profile `locata-torch-v1` includes the following tested corrections.
+Historical leaderboard equivalence has not been established.
 
 - Respect independent audio clocks, actual sample rate, and VAD coverage instead
   of a fixed 48 kHz zero-based clock and repeated final VAD labels.
@@ -174,7 +173,7 @@ trajectories, array trajectory, and numbered microphones. DOA plots label the
 second angle as inclination. Evaluation plots show activity, azimuth error,
 misses, false tracks, swaps, and OSPA.
 
-See [portable results](results-design.md) for accepted JSON/CSV/NPZ storage,
+See [portable results](results-design.md) for JSON/CSV/NPZ storage,
 explicit weighting, and the separate official submission adapter.
 
 `write_submission` requires the raw `RequiredTime` table, including invalid rows,

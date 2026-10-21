@@ -101,7 +101,7 @@ dataset notice. The library code uses Apache-2.0. No LOCATA data is bundled or
 redistributed by this package. Follow the dataset's attribution requirements
 when using it in research or other tools.
 
-The transfer and installation code is tested with local HTTP servers and small
-synthetic ZIP64 archives. The reader is separately tested on the existing LOCATA
-snapshot. Real final-release transfer and VAD payload validation remain unverified;
-see the [validation record](validation.md).
+Transfer and installation tests use local HTTP servers and small synthetic ZIP64
+archives. Reader integration covers a challenge-era snapshot and representative
+final-release eval recordings, including source poses and VAD. See the
+[validation record](validation.md) for tested cases and remaining limits.

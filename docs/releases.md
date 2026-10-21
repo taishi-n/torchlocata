@@ -8,8 +8,7 @@
   package with pip or uv and using it from an application.
 - Consolidate dataset paths, storage requirements, and download behavior in the
   storage guide.
-- Replace the initial release plan with maintainer release instructions and
-  consolidate the published-version validation record.
+- Document the maintainer release process and published-version validation.
 - Group documentation navigation into usage, project information, and
   contributor guides.
 
