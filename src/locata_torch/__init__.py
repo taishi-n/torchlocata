@@ -20,6 +20,13 @@ from .evaluation import EvaluationConfig, evaluate_locata, validate_tracks
 from .geometry import locata_doa, world_to_array
 from .music import MusicConfig, music_localize, music_stft
 from .plotting import plot_doa, plot_evaluation, plot_scene
+from .results import (
+    ResultBundle,
+    aggregate_results,
+    read_results,
+    write_results,
+    write_submission,
+)
 from .types import (
     DOA,
     ArrayPose,
@@ -76,6 +83,11 @@ __all__ = [
     "music_stft",
     "prepare_ground_truth",
     "validate_tracks",
+    "ResultBundle",
+    "aggregate_results",
+    "read_results",
+    "write_results",
+    "write_submission",
     "plot_doa",
     "plot_evaluation",
     "plot_scene",
