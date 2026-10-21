@@ -100,8 +100,9 @@ jobs:
           uv run --isolated --no-project --with dist/*.whl scripts/smoke_installed.py
           uv run --isolated --no-project --with "locata-torch[download] @ file://$PWD/dist/$(basename dist/*.whl)" scripts/smoke_installed.py
           uv run --isolated --no-project --with dist/*.tar.gz scripts/smoke_installed.py
-      - run: uv run --no-sync zensical build --clean --strict
-      - run: uv run --no-sync python scripts/check_docs_links.py site
+      - run: uv run --no-sync zensical build --clean --strict --config-file zensical.toml
+      - run: uv run --no-sync zensical build --clean --strict --config-file zensical.ja.toml
+      - run: uv run --no-sync python scripts/check_docs_links.py site --multilingual
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: distributions

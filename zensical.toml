@@ -6,6 +6,7 @@ repo_url = "https://github.com/taishi-n/torchlocata"
 docs_dir = "docs"
 site_dir = "site"
 use_directory_urls = false
+exclude_docs = "/ja/"
 nav = [
   { "Overview" = "index.md" },
   { "Getting started" = "getting-started.md" },
@@ -39,6 +40,12 @@ features = [
   "navigation.sections",
   "navigation.top",
   "search.highlight",
+]
+
+[project.extra]
+alternate = [
+  { name = "English", lang = "en", link = "https://taishi.org/torchlocata/" },
+  { name = "日本語", lang = "ja", link = "https://taishi.org/torchlocata/ja/" },
 ]
 
 [project.plugins.offline]

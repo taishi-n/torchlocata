@@ -1,4 +1,5 @@
 import importlib.util
+import re
 from pathlib import Path
 
 import pytest
@@ -45,3 +46,69 @@ def test_broken_file_navigation_fails(check_site, tmp_path, markup, reason):
 def test_site_needs_entry_page(check_site, tmp_path):
     with pytest.raises(ValueError, match="index.html"):
         check_site(tmp_path)
+
+
+def bilingual_site(root):
+    (root / "ja").mkdir()
+    for name in ("index.html", "guide.html"):
+        for locale, directory in (("en", root), ("ja", root / "ja")):
+            (directory / name).write_text(
+                f'<html lang="{locale}"><a href="https://taishi.org/torchlocata/" '
+                'hreflang="en" class="md-select__link">English</a>'
+                '<a href="https://taishi.org/torchlocata/ja/" hreflang="ja" '
+                'class="md-select__link">日本語</a>'
+                '<a href="guide.html">Guide</a></html>'
+            )
+
+
+def test_zensical_header_links_language_homepages(check_site, tmp_path):
+    bilingual_site(tmp_path)
+    assert check_site(tmp_path, multilingual=True) == (4, 4)
+
+
+@pytest.mark.parametrize(
+    ("old", "new", "reason"),
+    [
+        ('lang="ja"', 'lang="en"', "language"),
+        (
+            'href="https://taishi.org/torchlocata/ja/"',
+            'href="https://taishi.org/torchlocata/"',
+            "language homepage",
+        ),
+        ('class="md-select__link">日本語', ">日本語", "language switch"),
+    ],
+)
+def test_incorrect_language_switch_fails(check_site, tmp_path, old, new, reason):
+    bilingual_site(tmp_path)
+    guide = tmp_path / "ja/guide.html"
+    guide.write_text(guide.read_text().replace(old, new))
+    with pytest.raises(ValueError, match=reason):
+        check_site(tmp_path, multilingual=True)
+
+
+def test_missing_translation_fails(check_site, tmp_path):
+    bilingual_site(tmp_path)
+    (tmp_path / "ja/guide.html").unlink()
+    with pytest.raises(ValueError, match="translation|missing file"):
+        check_site(tmp_path, multilingual=True)
+
+
+def test_every_guide_has_a_translation():
+    root = Path(__file__).parents[1] / "docs"
+    english = {path.name for path in root.glob("*.md")}
+    japanese = {path.name for path in (root / "ja").glob("*.md")}
+    assert japanese == english
+
+
+def test_translations_preserve_executable_examples():
+    root = Path(__file__).parents[1]
+    for english in [root / "README.md", *sorted((root / "docs").glob("*.md"))]:
+        japanese = (
+            root / "README.ja.md"
+            if english.name == "README.md"
+            else root / "docs/ja" / english.name
+        )
+        blocks = r"```[^\n]*\n.*?```"
+        assert re.findall(blocks, english.read_text(), flags=re.S) == re.findall(
+            blocks, japanese.read_text(), flags=re.S
+        ), english.name

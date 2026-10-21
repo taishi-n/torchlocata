@@ -122,8 +122,9 @@ release are independent; upgrading the library does not replace the corpus.
 For changes to the documentation after a package release, validate locally:
 
 ```sh
-uv run --group docs zensical build --clean --strict
-uv run python scripts/check_docs_links.py site
+uv run --group docs zensical build --clean --strict --config-file zensical.toml
+uv run --group docs zensical build --clean --strict --config-file zensical.ja.toml
+uv run python scripts/check_docs_links.py site --multilingual
 ```
 
 After the changes are committed and pushed to `main`, deploy through the manual

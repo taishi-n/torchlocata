@@ -1,5 +1,7 @@
 # locata-torch
 
+English | [日本語](https://github.com/taishi-n/torchlocata/blob/main/README.ja.md)
+
 Read LOCATA recordings, timestamps, and position annotations with PyTorch
 `Dataset` and `DataLoader`. [locata-torch](https://pypi.org/project/locata-torch/)
 is available on PyPI; import it as `locata_torch` in your own application.
@@ -141,10 +143,9 @@ matched pose clocks and returns azimuth from +y in `[-pi, pi)`, inclination from
 
 ## Localization and evaluation
 
-The analysis APIs below are unreleased changes in the current checkout; the
-published 0.1.1 reader does not include them. To try them before the next release,
-clone the [source repository](https://github.com/taishi-n/torchlocata) and install
-from its root:
+The localization and evaluation APIs in this section are available from the
+source repository and have not yet been released on PyPI. Clone the
+[repository](https://github.com/taishi-n/torchlocata) and install from its root:
 
 ```sh
 git clone https://github.com/taishi-n/torchlocata.git
@@ -206,7 +207,11 @@ workspace conversion remain outside the reader's scope.
 
 ## Documentation and support
 
-The [documentation](https://taishi.org/torchlocata/) includes
+Documentation is available in [English](https://taishi.org/torchlocata/) and
+[Japanese](https://taishi.org/torchlocata/ja/index.html). Zensical's header language
+selector opens each language's homepage. Both languages can also be read from
+the generated HTML files.
+The guides include
 [getting started](https://taishi.org/torchlocata/getting-started.html), the
 [API reference](https://taishi.org/torchlocata/api.html), and detailed contracts for
 [data shapes](https://taishi.org/torchlocata/data-model.html),

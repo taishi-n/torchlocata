@@ -1,0 +1,65 @@
+[project]
+site_name = "locata-torch"
+site_description = "LOCATA の録音と注釈を PyTorch で扱うためのライブラリ"
+site_url = "https://taishi.org/torchlocata/ja/"
+repo_url = "https://github.com/taishi-n/torchlocata"
+docs_dir = "docs/ja"
+site_dir = "site/ja"
+use_directory_urls = false
+nav = [
+  { "概要" = "index.md" },
+  { "使い始める" = "getting-started.md" },
+  { "データの保存先" = "storage.md" },
+  { "データ仕様" = [
+    { "データ形式" = "data-model.md" },
+    { "時刻と窓" = "time-and-windows.md" },
+    { "座標と到来方向" = "geometry.md" },
+    { "読み込みと DataLoader" = "io-and-dataloader.md" },
+  ] },
+  { "定位と評価" = "analysis.md" },
+  { "結果の保存と集計" = "results-design.md" },
+  { "API リファレンス" = "api.md" },
+  { "プロジェクト情報" = [
+    { "リリースノート" = "releases.md" },
+    { "参考資料と設計方針" = "references.md" },
+    { "検証記録" = "validation.md" },
+  ] },
+  { "開発に参加する" = [
+    { "開発手順" = "development.md" },
+    { "公開手順" = "release-plan.md" },
+  ] },
+]
+
+[project.theme]
+language = "ja"
+font = false
+features = [
+  "content.code.copy",
+  "navigation.footer",
+  "navigation.sections",
+  "navigation.top",
+  "search.highlight",
+]
+
+[project.extra]
+alternate = [
+  { name = "English", lang = "en", link = "https://taishi.org/torchlocata/" },
+  { name = "日本語", lang = "ja", link = "https://taishi.org/torchlocata/ja/" },
+]
+
+[project.plugins.offline]
+
+[project.plugins.mkdocstrings.handlers.python]
+paths = ["src"]
+
+[project.plugins.mkdocstrings.handlers.python.options]
+docstring_style = "google"
+inherited_members = false
+filters = ["!^_"]
+members_order = "source"
+merge_init_into_class = true
+separate_signature = true
+show_if_no_docstring = true
+show_root_heading = true
+show_signature_annotations = true
+show_source = true

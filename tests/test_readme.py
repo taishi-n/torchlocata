@@ -3,7 +3,15 @@ from pathlib import Path
 import pytest
 
 
-@pytest.mark.parametrize("document", ["README.md", "docs/getting-started.md"])
+@pytest.mark.parametrize(
+    "document",
+    [
+        "README.md",
+        "README.ja.md",
+        "docs/getting-started.md",
+        "docs/ja/getting-started.md",
+    ],
+)
 def test_documented_python_example(make_recording, tmp_path, document):
     # Under 1 MiB of synthetic DOUBLE WAV, with one complete documented window.
     make_recording(array="eigenmike", frames=48000, channels=1, sample_rate=48000)

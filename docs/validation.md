@@ -1,5 +1,17 @@
 # Validation record
 
+## Bilingual documentation: 2026-10-21
+
+The site contains 15 guides in each language. English URLs are unchanged;
+Japanese pages use `ja/`. Strict builds and local-link checks cover both
+languages, matching page sets, HTML language attributes, and Zensical's standard
+header selector with links to the published language homepages.
+The documentation tests pass all 19 cases, including both languages' quick-start
+examples and unchanged executable code blocks. Ruff, formatting, and ty pass.
+API signatures and source docstrings are generated from the same Python modules;
+the Japanese API page includes a Japanese overview with the shared English
+docstrings.
+
 ## Unreleased MATLAB-based analysis update: 2026-10-21
 
 These checks apply to the current source changes, not a new PyPI release.
@@ -20,8 +32,6 @@ no LOCATA archive was downloaded for this update.
 | Installed consumer | A wheel installed into an independent environment passed reading, analysis, JSON/CSV/NPZ round-trip, official-style export, CLI, and two spawn workers without requiring Matplotlib. |
 | End-to-end example | Full final-eval task 1, recording 1, benchmark2 completed coarse-grid MUSIC, evaluation, bundle/submission export, and PNG generation. This is an execution check, not a baseline accuracy benchmark. |
 
-Local tools: Python 3.12.8, Torch 2.14.1, NumPy 2.5.3, SoundFile 0.14.0,
-Matplotlib 3.11.2, Ruff 0.16.10, ty 0.0.85, and Zensical 0.0.68 on macOS arm64.
 The configured multi-platform CI matrix was updated to install the plot extra;
 that remote matrix has not been run for this update.
 
@@ -67,11 +77,8 @@ passed the configured checks before publication.
 | Installed consumers | Fresh base-wheel, download-extra-wheel, and sdist consumers passed outside the checkout, including two spawn workers |
 | Documentation | Strict Zensical build and local page, fragment, and asset checks passed |
 
-Local release checks used macOS arm64 and Python 3.12.8 with Torch 2.14.1,
-NumPy 2.5.3, SoundFile 0.14.0, platformdirs 4.12.3, and filelock 4.0.12.
-Documentation tools were Zensical 0.0.68, mkdocstrings-python 2.0.9, and
-mkdocstrings 1.0.6. These versions describe the tested environments rather than
-all possible dependency combinations.
+The table records the validated platform and minimum-dependency combinations;
+other dependency combinations were not exhaustively tested.
 
 ### Synthetic coverage
 
@@ -146,12 +153,12 @@ inventory and the downloaded distribution bytes:
 
 | Consumer check | Result |
 | --- | --- |
-| Fresh Python 3.12.8 environment | `python -m pip install "locata-torch==0.1.0"` installed the public package and dependencies |
+| Fresh Python 3.12 environment | `python -m pip install "locata-torch==0.1.0"` installed the public package and dependencies |
 | Import location | Resolved to the independent environment's `site-packages` |
 | Installed smoke check | Waveforms, clocks, padding, CLI, and two spawn workers passed |
 | Existing snapshot with the pip-installed package | All 12 integration tests passed |
 | Documented real-data example | Zero-worker and two-worker batches matched the expected shape and sample rate |
-| Separate uv project, Python 3.13.1 | `uv add "locata-torch[download]"` installed 0.1.0; installed smoke and spawn checks passed |
+| Separate uv project, Python 3.13 | `uv add "locata-torch[download]"` installed 0.1.0; installed smoke and spawn checks passed |
 
 The [0.1.0rc1 TestPyPI rehearsal](https://github.com/taishi-n/torchlocata/actions/runs/37611388927)
 also passed the matrix and independent installation checks before the stable

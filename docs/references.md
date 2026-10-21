@@ -131,8 +131,8 @@ do not constitute integration validation of the final-release archive.
   need not share sample rates or start times.
 - Missing annotations use `None`; an existing empty interval uses empty tensors.
   Validity flags remain independent of VAD.
-- DOA requires exactly matched clocks. Temporal and rotation interpolation are
-  not provided.
+- DOA requires exactly matched clocks. The raw reader does not interpolate
+  annotation times or rotations.
 - Nonuniform clocks remain unchanged. Only the endpoint after the last audio
   sample uses the nominal `1/fs` period.
 - Boundary comparisons alone use a `1e-12` second tolerance to avoid including an
@@ -152,7 +152,7 @@ do not constitute integration validation of the final-release archive.
 - No dense-label conversion, training-transform framework, general plugin system,
   or compatibility aliases are provided.
 - Development checks use pytest, Ruff, and ty. Zensical and mkdocstrings are
-  isolated in the optional `docs` dependency group. Documentation is English;
+  isolated in the optional `docs` dependency group. Guides are available in English and Japanese;
   generated HTML is not tracked. GitHub Actions validates distributions and
   documentation before publishing through OIDC.
 
@@ -162,10 +162,11 @@ target and is not a replacement for the official evaluation tools.
 ## Documentation tooling
 
 The documentation uses the official [Zensical configuration](https://zensical.org/docs/setup/basics/),
+[language settings](https://zensical.org/docs/setup/language/),
 [offline usage](https://zensical.org/docs/setup/offline/), and
 [mkdocstrings compatibility](https://zensical.org/docs/compatibility/mkdocs/plugins/)
 guides, with Python API collection configured according to
 [mkdocstrings-python](https://mkdocstrings.github.io/python/usage/).
-Installed tool versions and the executed documentation checks are recorded in
+The executed documentation checks are recorded in
 [validation](validation.md). These tools are used to build documentation, not
 imported by the runtime library.

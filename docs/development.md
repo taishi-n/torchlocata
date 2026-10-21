@@ -8,8 +8,9 @@
 | [tests/](https://github.com/taishi-n/torchlocata/tree/main/tests) | Synthetic fixtures and explicitly enabled real-data integration tests |
 | [examples/read_locata.py](https://github.com/taishi-n/torchlocata/blob/main/examples/read_locata.py) | Command-line example with spawn workers and a main guard |
 | [examples/analyze_locata.py](https://github.com/taishi-n/torchlocata/blob/main/examples/analyze_locata.py) | Explicit localization, evaluation, result export, and plotting example |
-| [docs/](https://github.com/taishi-n/torchlocata/tree/main/docs) | English documentation sources |
+| [docs/](https://github.com/taishi-n/torchlocata/tree/main/docs) | English guides, with matching Japanese pages in `docs/ja/` |
 | [zensical.toml](https://github.com/taishi-n/torchlocata/blob/main/zensical.toml) | Documentation navigation, theme, and API-generation settings |
+| [zensical.ja.toml](https://github.com/taishi-n/torchlocata/blob/main/zensical.ja.toml) | Japanese navigation and site settings |
 | [scripts/check_docs_links.py](https://github.com/taishi-n/torchlocata/blob/main/scripts/check_docs_links.py) | Local-page, anchor, and asset validation for generated HTML |
 | [scripts/check_release.py](https://github.com/taishi-n/torchlocata/blob/main/scripts/check_release.py) | Distribution metadata, contents, version routing, and hashes |
 | [scripts/smoke_installed.py](https://github.com/taishi-n/torchlocata/blob/main/scripts/smoke_installed.py) | Installed-package reading, CLI, and spawn checks |
@@ -46,8 +47,7 @@ tools are dependency groups. CI installs the plot extra so figure tests execute.
 
 Update the documented contract first, write behavioral tests and confirm the
 expected failure, then implement the smallest change and reconcile code and
-documentation. Do not add compatibility aliases, migration code, or a general
-plugin framework.
+documentation. Keep one public API for each supported operation.
 
 ## Test boundaries
 
@@ -74,20 +74,35 @@ uv run python examples/read_locata.py --root /path/to/LOCATA --workers 2
 
 ## Preview and build documentation
 
-Documentation tools are an optional `docs` dependency group, separate from the
-library's runtime dependencies and the `dev` group:
+English pages retain their existing URLs. Japanese pages live under `ja/`, with
+the same filenames. Zensical's `theme.language` localizes each site's interface;
+`extra.alternate` provides the header selector linking to each language's homepage.
+Each language has its own navigation and search index, with the same API and examples.
+API signatures and source docstrings are generated from the shared Python code.
+
+Install the `docs` dependency group, then build and check both languages:
 
 ```sh
 uv sync --group docs
-uv run --group docs zensical serve
+uv run zensical build --clean --strict --config-file zensical.toml
+uv run zensical build --clean --strict --config-file zensical.ja.toml
+uv run python scripts/check_docs_links.py site --multilingual
 ```
 
-The preview is served at `http://localhost:8000`. To generate a static site:
+Open `site/index.html` or `site/ja/index.html`, or serve the combined site:
 
 ```sh
-uv run --group docs zensical build --clean --strict
-uv run python scripts/check_docs_links.py site
+uv run python -m http.server --directory site 8000
 ```
+
+The preview is served at `http://localhost:8000`. Zensical sets one canonical
+language per project, so the build uses `zensical.toml` for English and
+`zensical.ja.toml` for Japanese. Build English first: its clean build recreates
+`site/`, then the Japanese build adds `site/ja/`. The standard language selector
+uses the published homepage URLs. For a local preview, open `/index.html` or
+`/ja/index.html` on the preview server, or the matching files under `site/`.
+When adding or changing a guide, update both languages and keep API names,
+numeric values, examples, and validation limits consistent.
 
 The configuration sets `use_directory_urls=false`, so pages link to concrete
 HTML files and can be opened from `site/index.html`. Offline mode enables local
