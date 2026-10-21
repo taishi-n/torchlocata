@@ -17,12 +17,14 @@ def check_site():
 def test_local_pages_assets_and_fragments(check_site, tmp_path):
     (tmp_path / "index.html").write_text(
         '<a href="guide.html#usage">Guide</a><img src="logo.svg">'
-        '<a href="https://example.com/">External</a>'
+        '<a href="https://example.com/">External</a>',
+        encoding="utf-8",
     )
     (tmp_path / "guide.html").write_text(
-        '<h1 id="usage">Usage</h1><a href="index.html">Home</a>'
+        '<h1 id="usage">Usage</h1><a href="index.html">Home</a>',
+        encoding="utf-8",
     )
-    (tmp_path / "logo.svg").write_text("<svg></svg>")
+    (tmp_path / "logo.svg").write_text("<svg></svg>", encoding="utf-8")
     assert check_site(tmp_path) == (2, 3)
 
 
@@ -38,7 +40,7 @@ def test_local_pages_assets_and_fragments(check_site, tmp_path):
     ],
 )
 def test_broken_file_navigation_fails(check_site, tmp_path, markup, reason):
-    (tmp_path / "index.html").write_text(markup)
+    (tmp_path / "index.html").write_text(markup, encoding="utf-8")
     with pytest.raises(ValueError, match=reason):
         check_site(tmp_path)
 
@@ -57,7 +59,8 @@ def bilingual_site(root):
                 'hreflang="en" class="md-select__link">English</a>'
                 '<a href="https://taishi.org/torchlocata/ja/" hreflang="ja" '
                 'class="md-select__link">日本語</a>'
-                '<a href="guide.html">Guide</a></html>'
+                '<a href="guide.html">Guide</a></html>',
+                encoding="utf-8",
             )
 
 
@@ -81,7 +84,9 @@ def test_zensical_header_links_language_homepages(check_site, tmp_path):
 def test_incorrect_language_switch_fails(check_site, tmp_path, old, new, reason):
     bilingual_site(tmp_path)
     guide = tmp_path / "ja/guide.html"
-    guide.write_text(guide.read_text().replace(old, new))
+    guide.write_text(
+        guide.read_text(encoding="utf-8").replace(old, new), encoding="utf-8"
+    )
     with pytest.raises(ValueError, match=reason):
         check_site(tmp_path, multilingual=True)
 
@@ -109,6 +114,8 @@ def test_translations_preserve_executable_examples():
             else root / "docs/ja" / english.name
         )
         blocks = r"```[^\n]*\n.*?```"
-        assert re.findall(blocks, english.read_text(), flags=re.S) == re.findall(
-            blocks, japanese.read_text(), flags=re.S
-        ), english.name
+        assert re.findall(
+            blocks, english.read_text(encoding="utf-8"), flags=re.S
+        ) == re.findall(blocks, japanese.read_text(encoding="utf-8"), flags=re.S), (
+            english.name
+        )

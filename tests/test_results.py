@@ -59,14 +59,17 @@ def test_json_csv_npz_roundtrip_without_pickle(tmp_path):
         include_frame_arrays=True,
         provenance={"algorithm": "trial", "corpus_release": "synthetic"},
     )
-    manifest = json.loads((output / "manifest.json").read_text())
+    manifest = json.loads((output / "manifest.json").read_text(encoding="utf-8"))
     assert manifest["schema_version"] == 1
     assert "2787cdab" in json.dumps(manifest)
 
     def reject_constant(value):
         pytest.fail(f"nonstandard JSON numeric constant: {value}")
 
-    json.loads((output / "manifest.json").read_text(), parse_constant=reject_constant)
+    json.loads(
+        (output / "manifest.json").read_text(encoding="utf-8"),
+        parse_constant=reject_constant,
+    )
     bundle = read_results(output)
     assert len(bundle.frames) == 2
     assert all(
@@ -82,7 +85,7 @@ def test_json_csv_npz_roundtrip_without_pickle(tmp_path):
         row for row in summary if row["metric"] == "probability_of_detection"
     )
     assert probability["value"] == 0.5
-    with (output / "recordings.csv").open(newline="") as stream:
+    with (output / "recordings.csv").open(encoding="utf-8", newline="") as stream:
         assert any(row["value"] == "" for row in csv.DictReader(stream))
     with pytest.raises(FileExistsError):
         write_results(results(), output, corpus_roots=(tmp_path / "corpus",))
@@ -97,9 +100,9 @@ def test_storage_missing_details_unusual_ids_and_integrity(tmp_path):
     assert bundle.frames == {}
     assert bundle.sources[0]["source_id"] == source_id
     manifest = output / "manifest.json"
-    payload = json.loads(manifest.read_text())
+    payload = json.loads(manifest.read_text(encoding="utf-8"))
     payload["schema_version"] = 99
-    manifest.write_text(json.dumps(payload))
+    manifest.write_text(json.dumps(payload), encoding="utf-8")
     with pytest.raises(ValueError, match="schema"):
         read_results(output)
 
@@ -119,11 +122,11 @@ def test_result_reader_checks_hashes_and_frame_shapes(tmp_path):
     np.savez_compressed(path, **values)
     with pytest.raises(ValueError, match="checksum"):
         read_results(output)
-    manifest = json.loads((output / "manifest.json").read_text())
+    manifest = json.loads((output / "manifest.json").read_text(encoding="utf-8"))
     manifest["files"][path.relative_to(output).as_posix()] = hashlib.sha256(
         path.read_bytes()
     ).hexdigest()
-    (output / "manifest.json").write_text(json.dumps(manifest))
+    (output / "manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
     with pytest.raises(ValueError, match="shape|schema"):
         read_results(output)
 
@@ -154,7 +157,7 @@ def test_submission_calendar_rollover_precision_and_track_ids(tmp_path):
         corpus_roots=(tmp_path / "corpus",),
         elapsed_seconds=0.125,
     )
-    with (output / "source_1.txt").open(newline="") as stream:
+    with (output / "source_1.txt").open(encoding="utf-8", newline="") as stream:
         rows = list(csv.DictReader(stream, delimiter="\t"))
     assert rows[0]["ID"] == "track/α"
     assert float(rows[0]["second"]) == pytest.approx(59.996)
@@ -162,8 +165,10 @@ def test_submission_calendar_rollover_precision_and_track_ids(tmp_path):
     assert float(rows[1]["second"]) == pytest.approx(0, abs=1e-12)
     assert float(rows[2]["second"]) == pytest.approx(0.004, abs=1e-12)
     assert rows[1]["azimuth"].lower() == "nan"
-    assert float((output / "telapsed.txt").read_text()) == 0.125
-    assert json.loads((output / "manifest.json").read_text())["tracks"] == ["track/α"]
+    assert float((output / "telapsed.txt").read_text(encoding="utf-8")) == 0.125
+    assert json.loads((output / "manifest.json").read_text(encoding="utf-8"))[
+        "tracks"
+    ] == ["track/α"]
 
 
 def test_submission_uses_first_raw_required_time_including_invalid_rows(tmp_path):
@@ -178,7 +183,9 @@ def test_submission_uses_first_raw_required_time_including_invalid_rows(tmp_path
         },
         elapsed_seconds=0.1,
     )
-    with (tmp_path / "submission" / "source_1.txt").open(newline="") as stream:
+    with (tmp_path / "submission" / "source_1.txt").open(
+        encoding="utf-8", newline=""
+    ) as stream:
         rows = list(csv.DictReader(stream, delimiter="\t"))
     assert [float(row["timestamps"]) for row in rows] == pytest.approx([0.004, 0.008])
 

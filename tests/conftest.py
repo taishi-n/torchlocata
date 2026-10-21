@@ -28,7 +28,8 @@ def write_table(path: Path, columns: Sequence[str], rows: Sequence[Sequence[floa
     path.write_text(
         "\t".join(columns)
         + "\n"
-        + "".join("\t".join(format(v, ".17g") for v in row) + "\n" for row in rows)
+        + "".join("\t".join(format(v, ".17g") for v in row) + "\n" for row in rows),
+        encoding="utf-8",
     )
 
 
