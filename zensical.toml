@@ -16,6 +16,8 @@ nav = [
     { "Geometry and DOA" = "geometry.md" },
     { "I/O and DataLoader" = "io-and-dataloader.md" },
   ] },
+  { "Localization and evaluation" = "analysis.md" },
+  { "Portable results" = "results-design.md" },
   { "API reference" = "api.md" },
   { "Project" = [
     { "Release notes" = "releases.md" },

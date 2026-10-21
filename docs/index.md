@@ -17,6 +17,8 @@ on the CPU. It supports tasks 1–6 and the `benchmark2`, `dicit`, `dummy`, and
 | Share existing data across applications or download a split | [Paths and storage](storage.md) |
 | Find a class, function, or typed schema | [API reference](api.md) |
 | Use multiple workers, samplers, or variable-length batches | [I/O and DataLoader](io-and-dataloader.md) |
+| Run MATLAB-based MUSIC, prepare GT/VAD, evaluate tracks, or plot diagnostics | [Localization and evaluation](analysis.md) |
+| Save portable results or choose aggregation weights | [Portable results](results-design.md) |
 
 An existing unpacked root has this structure:
 
@@ -61,4 +63,9 @@ See [release notes](releases.md) for version history,
 [development](development.md) to contribute or build the documentation, and the
 [release process](release-plan.md) for maintainer operations. Corpus repair,
 RIR synthesis, model training, official evaluation metrics, and other corpora
-are outside the library's scope. It has no TorchRIR dependency.
+are outside the raw reader's scope. Explicit analysis helpers provide the
+documented LOCATA-based metric profile; historical MATLAB execution equivalence
+has not been established. It has no TorchRIR dependency.
+
+The analysis layer is currently unreleased. Install the checkout to use it;
+published 0.1.1 contains the reader and downloader APIs.

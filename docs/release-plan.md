@@ -29,7 +29,8 @@ CI never downloads LOCATA archives.
 
 The publisher consumes the artifact set produced by validation, verifies its
 `SHA256SUMS`, and uploads without rebuilding or checking out source code.
-`scripts/check_release.py` checks tag/version agreement, dependencies, license
+[scripts/check_release.py](https://github.com/taishi-n/torchlocata/blob/main/scripts/check_release.py)
+checks tag/version agreement, dependencies, license
 metadata, `py.typed`, the CLI entry point, and exclusion of corpus and generated
 assets. It writes the SHA-256 inventory for the newly built distributions.
 

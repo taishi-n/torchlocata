@@ -102,7 +102,10 @@ if __name__ == "__main__":
     main()
 ```
 
-An executable example is available at `examples/read_locata.py` in the repository.
+An executable
+[DataLoader example](https://github.com/taishi-n/torchlocata/blob/main/examples/read_locata.py)
+is available in the source repository; see [development](development.md#install-and-run-checks)
+for checkout and setup commands.
 Worker-zero and explicit-spawn checks are recorded in [validation](validation.md).
 See the [PyTorch DataLoader documentation](https://docs.pytorch.org/docs/2.9/data.html)
 for the upstream multiprocessing contract.

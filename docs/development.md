@@ -4,23 +4,30 @@
 
 | Path | Purpose |
 | --- | --- |
-| `src/locata_torch/` | Dataset views, collation, geometry, typed schemas, storage, downloader, and CLI |
-| `tests/` | Synthetic fixtures and explicitly enabled real-data integration tests |
-| `examples/read_locata.py` | Command-line example with spawn workers and a main guard |
-| `docs/` | English documentation sources |
-| `zensical.toml` | Documentation navigation, theme, and API-generation settings |
-| `scripts/check_docs_links.py` | Local-page, anchor, and asset validation for generated HTML |
-| `scripts/check_release.py` | Distribution metadata, contents, version routing, and hashes |
-| `scripts/smoke_installed.py` | Installed-package reading, CLI, and spawn checks |
+| [src/locata_torch/](https://github.com/taishi-n/torchlocata/tree/main/src/locata_torch) | Dataset views, collation, geometry, typed schemas, storage, downloader, and CLI |
+| [tests/](https://github.com/taishi-n/torchlocata/tree/main/tests) | Synthetic fixtures and explicitly enabled real-data integration tests |
+| [examples/read_locata.py](https://github.com/taishi-n/torchlocata/blob/main/examples/read_locata.py) | Command-line example with spawn workers and a main guard |
+| [examples/analyze_locata.py](https://github.com/taishi-n/torchlocata/blob/main/examples/analyze_locata.py) | Explicit localization, evaluation, result export, and plotting example |
+| [docs/](https://github.com/taishi-n/torchlocata/tree/main/docs) | English documentation sources |
+| [zensical.toml](https://github.com/taishi-n/torchlocata/blob/main/zensical.toml) | Documentation navigation, theme, and API-generation settings |
+| [scripts/check_docs_links.py](https://github.com/taishi-n/torchlocata/blob/main/scripts/check_docs_links.py) | Local-page, anchor, and asset validation for generated HTML |
+| [scripts/check_release.py](https://github.com/taishi-n/torchlocata/blob/main/scripts/check_release.py) | Distribution metadata, contents, version routing, and hashes |
+| [scripts/smoke_installed.py](https://github.com/taishi-n/torchlocata/blob/main/scripts/smoke_installed.py) | Installed-package reading, CLI, and spawn checks |
 | `site/` | Generated documentation; ignored by version control |
 
-`README.md` introduces the API and links to the detailed contracts. The existing
-`AGENTS.md` contributor guide remains at the repository root.
+[README.md](https://github.com/taishi-n/torchlocata/blob/main/README.md) introduces
+the API and links to the detailed contracts. The
+[AGENTS.md](https://github.com/taishi-n/torchlocata/blob/main/AGENTS.md) contributor
+guide remains at the repository root.
 
 ## Install and run checks
 
+Clone the repository first. Run the development commands from its root:
+
 ```sh
-uv sync --locked --python 3.12 --extra download --group docs --group release
+git clone https://github.com/taishi-n/torchlocata.git
+cd torchlocata
+uv sync --locked --python 3.12 --extra download --extra plot --group docs --group release
 uv run pytest -m "not integration"
 uv run ruff check .
 uv run ruff format --check .
@@ -34,7 +41,8 @@ Ruff applies an 88-column Python style with four-space indentation. Use
 `snake_case` for functions and modules, `PascalCase` for classes, and public type
 annotations. `uv run ruff format .` applies formatting. Keep runtime dependencies
 focused on PyTorch, NumPy, SoundFile, and platformdirs. Filelock belongs to the
-download extra; documentation and release tools are dependency groups.
+download extra; Matplotlib belongs to the plot extra. Documentation and release
+tools are dependency groups. CI installs the plot extra so figure tests execute.
 
 Update the documented contract first, write behavioral tests and confirm the
 expected failure, then implement the smallest change and reconcile code and
@@ -92,7 +100,10 @@ content is generated from `src/locata_torch` using mkdocstrings. Build in strict
 mode and run the link checker after documentation changes. The checker validates
 local pages, fragments, and assets; it does not probe external websites.
 The repository README uses absolute hosted documentation URLs so its links also
-work when rendered on PyPI outside this checkout.
+work when rendered on PyPI outside this checkout. Link repository files outside
+`docs/` through their public GitHub `blob/main/` or `tree/main/` URLs. Use
+`/path/to/LOCATA` and `/path/to/experiment` as configurable path placeholders;
+never embed a contributor's machine paths or `file://` links in public prose.
 
 CI runs tests across Python 3.10–3.14 and Linux/macOS/Windows, plus minimum direct
 dependencies on Python 3.10. It runs Ruff, ty, package/metadata/content checks,

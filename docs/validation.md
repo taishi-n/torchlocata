@@ -1,6 +1,51 @@
 # Validation record
 
-This record describes the published [0.1.0 release](https://pypi.org/project/locata-torch/0.1.0/),
+## Unreleased MATLAB-based analysis update: 2026-10-21
+
+These checks apply to the current source changes, not a new PyPI release.
+The [analysis guide](analysis.md) records the exact MATLAB commits, formulas,
+intentional corrections, and the `locata-torch-v1` metric profile.
+[NOTICE](https://github.com/taishi-n/torchlocata/blob/main/NOTICE) is
+included in both distribution formats. All corpus operations were read-only;
+no LOCATA archive was downloaded for this update.
+
+| Check | Observed result |
+| --- | --- |
+| Mandatory synthetic suite | 184 passed; 18 integration cases deselected. The plot extra was installed, so rendering tests executed. One intentional duplicate-ZIP-name fixture warning remained. |
+| Existing challenge-era snapshot | 16 integration cases passed; 2 new representative selections were absent and skipped. The original 12 reader integration cases passed, including spawn workers and the 4 ms regression. |
+| Existing managed final-release eval | 10 integration cases passed; 8 dev-only cases skipped because this root contains eval only. All 6 new task/array analysis cases executed. |
+| Numeric references | Independent NumPy STFT framing and MUSIC block-peak comparisons, analytic angular/tracking cases, and exhaustive small rectangular assignment checks passed. |
+| Quality and distribution | Ruff lint/format, ty, wheel/sdist build, strict metadata checks, and NOTICE/optional-dependency checks passed. |
+| Documentation | Strict Zensical build and local page/fragment/asset checks passed. |
+| Installed consumer | A wheel installed into an independent environment passed reading, analysis, JSON/CSV/NPZ round-trip, official-style export, CLI, and two spawn workers without requiring Matplotlib. |
+| End-to-end example | Full final-eval task 1, recording 1, benchmark2 completed coarse-grid MUSIC, evaluation, bundle/submission export, and PNG generation. This is an execution check, not a baseline accuracy benchmark. |
+
+Local tools: Python 3.12.8, Torch 2.14.1, NumPy 2.5.3, SoundFile 0.14.0,
+Matplotlib 3.11.2, Ruff 0.16.10, ty 0.0.85, and Zensical 0.0.68 on macOS arm64.
+The configured multi-platform CI matrix was updated to install the plot extra;
+that remote matrix has not been run for this update.
+
+The new real-data cases use recording 1 of each eval task: benchmark2, dicit,
+dummy, eigenmike, eigenmike, and benchmark2 for tasks 1–6, respectively. They
+analyze a middle one-second window, including multiple sources and moving arrays.
+Final-release cases exercise actual source poses and array VAD, oracle-track
+consistency, MUSIC, and portable storage. Legacy cases exercise the absence of
+eval source labels without inventing silence. File size/mtime checks around the
+tested operations matched. No recordings were copied into the repository.
+
+Real data exposed repeated quantized timestamps with different poses and valid
+required rows outside audio/VAD coverage. Tests now cover ordered timestamp
+multiplicity and explicit audio-bound selection; the default retains unknown
+labels. These corrections were verified after the initial failing cases.
+
+MATLAB/Octave was not executed. No numerical execution equivalence or historical
+leaderboard reproduction is claimed. Final-release integration is representative,
+not an exhaustive payload check of every recording. The historical limits below
+describe the earlier release and are superseded only for the cases above.
+
+## Published 0.1.0 validation
+
+The following record describes the published [0.1.0 release](https://pypi.org/project/locata-torch/0.1.0/),
 verified on 2026-10-07. Signed tag `v0.1.0` identifies commit `23cf99c`.
 Synthetic tests, existing-data integration, and public installation checks are
 reported separately. Dataset paths in commands are placeholders.
@@ -119,7 +164,7 @@ and [documentation deployment](https://github.com/taishi-n/torchlocata/actions/r
 passed. Hosted documentation can be updated independently of the tagged package
 artifacts through the [release process](release-plan.md#deploy-documentation-changes).
 
-## Verification limits
+## Limits of the original release verification
 
 - No complete official LOCATA archive was downloaded during verification.
   Final-release audio, annotation, and VAD payloads remain unverified. Bounded
@@ -133,5 +178,6 @@ artifacts through the [release process](release-plan.md#deploy-documentation-cha
 
 See [references](references.md) for the inspected corpus versions and source
 fingerprints, and [paths and storage](storage.md#release-and-disk-space) for the
-pinned archive metadata. Interpolation, resampling, dense-label generation, and
-official evaluation are outside the library's scope.
+pinned archive metadata. The raw reader still performs no implicit interpolation,
+resampling, dense-label generation, or evaluation. The explicit analysis APIs
+added later are described above and in the [analysis guide](analysis.md).

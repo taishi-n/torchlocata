@@ -5,8 +5,9 @@ Read LOCATA recordings, timestamps, and position annotations with PyTorch
 is available on PyPI; import it as `locata_torch` in your own application.
 
 The library provides recording datasets, fixed-length window views, padded
-batches, coordinate helpers, and an optional downloader for the official LOCATA
-release. It returns CPU tensors and works independently of TorchRIR.
+batches, coordinate helpers, an explicit localization/evaluation layer, and an
+optional downloader for the official LOCATA release. It returns CPU tensors and
+works independently of TorchRIR.
 
 ## Installation
 
@@ -138,6 +139,71 @@ Geometry helpers use LOCATA's `R.T @ (h - p)` convention. `locata_doa` requires
 matched pose clocks and returns azimuth from +y in `[-pi, pi)`, inclination from
 +z in `[0, pi]`, and range in metres. Angles are radians.
 
+## Localization and evaluation
+
+The analysis APIs below are unreleased changes in the current checkout; the
+published 0.1.1 reader does not include them. To try them before the next release,
+clone the [source repository](https://github.com/taishi-n/torchlocata) and install
+from its root:
+
+```sh
+git clone https://github.com/taishi-n/torchlocata.git
+cd torchlocata
+python -m pip install ".[plot]"
+```
+
+The explicit analysis APIs are based on the organizers' MATLAB
+[I/O framework](https://github.com/cevers/sap_locata_io/tree/632468f49b13ca5a9f2f51c064d91183c06622fa)
+and [evaluation framework](https://github.com/cevers/sap_locata_eval/tree/2787cdabf21bc96453c0d4f3c66db9c9c9f40434).
+They do not change Dataset outputs. See [MATLAB provenance and analysis](https://taishi.org/torchlocata/analysis.html)
+for the function mapping, units, formulas, corrections, and verification limits.
+
+```python
+from locata_torch import (
+    MusicConfig,
+    evaluate_locata,
+    music_localize,
+    prepare_ground_truth,
+)
+
+truth = prepare_ground_truth(sample, time_bounds=sample["metadata"]["time_bounds"])
+estimate = music_localize(sample, config=MusicConfig())
+# Evaluation requires source poses and known array-aligned VAD at every
+# selected time. Missing annotations raise an error rather than imply silence.
+result = evaluate_locata(truth, [estimate["track"]])
+metrics = result["metrics"]  # Per-recording metrics, with explicit denominators.
+```
+
+`prepare_ground_truth` selects valid required times and matches pose timestamps;
+it never pairs annotation rows by their indices or interpolates rotations.
+`align_vad` explicitly samples array VAD on its own clock with a previous-sample
+hold. Uncovered target times remain NaN; a missing VAD remains `None`.
+`activity_periods` returns half-open index intervals of known activity.
+
+`music_stft` reproduces the reference framing and symmetric Hamming window.
+`music_localize` provides the reference single-source MUSIC baseline, including
+explicit microphone selection, block processing, and interpolation of estimates.
+It reports block estimates and a validated `DOATrack`; it does not use source
+ground truth. `validate_tracks` checks IDs, clocks, shapes, radians, and NaN
+estimates before evaluation. `EvaluationConfig` makes gating and OSPA parameters
+explicit. Unavailable scalar metrics are `None`; unavailable per-frame errors
+are NaN, never artificial zero errors.
+
+The `plot` extra enables `plot_scene`, `plot_doa`, and `plot_evaluation`. These
+return Matplotlib figures without displaying or saving them. Matplotlib is
+optional and is not imported when the library is imported. The
+[analysis example](https://github.com/taishi-n/torchlocata/blob/main/examples/analyze_locata.py)
+demonstrates localization, evaluation, export, and plotting from a source checkout.
+
+`aggregate_results` requires explicit grouping and weighting (`recording` or
+`pooled`). `write_results` and `read_results` exchange versioned JSON metadata,
+CSV tables, and optional non-pickled NPZ frame arrays. `write_submission` is a
+separate adapter for the official tab-separated result format. All writers use
+an explicitly supplied output directory and reject paths inside corpus roots.
+See the [portable results design](https://taishi.org/torchlocata/results-design.html) for missing values,
+denominators, units, and interchange contracts. Corpus writing and MATLAB
+workspace conversion remain outside the reader's scope.
+
 ## Documentation and support
 
 The [documentation](https://taishi.org/torchlocata/) includes
@@ -148,13 +214,15 @@ The [documentation](https://taishi.org/torchlocata/) includes
 [geometry](https://taishi.org/torchlocata/geometry.html).
 
 The reader performs no implicit silence removal, resampling, normalization,
-interpolation, or invalid-row filtering. Corpus repair, RIR synthesis, model
-training, official evaluation metrics, and other corpora are outside its scope.
+interpolation, or invalid-row filtering. Analysis transforms are opt-in. Corpus
+repair, RIR synthesis, model training, and other corpora are outside its scope.
 The [validation record](https://taishi.org/torchlocata/validation.html) distinguishes
 synthetic tests and existing-data integration from unverified final-release
 payloads. Report problems through the [issue tracker](https://github.com/taishi-n/torchlocata/issues).
 
-Library code is Apache-2.0. LOCATA data has separate ODC-BY 1.0 attribution
-requirements; no corpus files are bundled in the package. See the
+Library code is [Apache-2.0](https://github.com/taishi-n/torchlocata/blob/main/LICENSE),
+with MATLAB attribution in [NOTICE](https://github.com/taishi-n/torchlocata/blob/main/NOTICE).
+LOCATA data has separate ODC-BY 1.0 attribution requirements; no corpus files are
+bundled in the package. See the
 [reference and license record](https://taishi.org/torchlocata/references.html).
 To contribute, follow the [development guide](https://taishi.org/torchlocata/development.html).
